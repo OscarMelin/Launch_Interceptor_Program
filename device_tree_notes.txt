@@ -1,0 +1,47 @@
+Device Trees on the BeagleBone
+
+
+
+Available device trees: (precompiled)
+	/lib/firmware
+	
+	
+To view loaded device trees and their slots:
+	cat /sys/devices/bone_capemgr*/slots
+
+To (temporarily) load a device tree:
+	echo (device tree name, no 00A0 or extension) >/sys/devices/bone_capemgr*/slots
+
+To (temporarily) unload a device tree:
+	echo -(slot number) >/sys/devices/bone_capemgr*/slots
+
+To load/disable a device tree at boot: Edit		/boot/uboot/uEnv.txt
+	cape_enable=capemgr.enable_partno= (device tree name, no 00A0 or extension)
+	cape_disable=capemgr.disable_partno= (device tree name, no 00A0 or extension)
+
+	
+	
+To decompile device trees into source:
+	dtc -I dtb -O dts (input file) > (outputfile)
+
+To compile device trees:
+	dtc -O dtb -o (output file) -b 0 -@ (input file)
+
+	
+	
+Resources on device trees:
+	(How to use on Beaglebone black) 	http://elinux.org/BeagleBone_and_the_3.8_Kernel#Cape_Manager_and_Device_Tree_Overlays
+	(General how to create)					http://devicetree.org/Device_Tree_Usage
+	
+Pinmux Tables:
+	https://github.com/bradfa/beaglebone_pinmux_tables/blob/master/beaglebone_pins_p8
+	https://github.com/bradfa/beaglebone_pinmux_tables/blob/master/beaglebone_pins_p9
+	
+GPIO Option Bits: (scroll down to table)
+	http://derekmolloy.ie/gpios-on-the-beaglebone-black-using-device-tree-overlays/
+	
+	
+	
+	
+	
+	
