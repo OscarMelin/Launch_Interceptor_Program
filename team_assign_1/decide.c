@@ -61,6 +61,34 @@ void DECIDE(void) {
         } // End col 'for' loop
     } // End row 'for' loop
 
+    /* Populate the FUV from the PUM
+     * If the PUM diagonal element is FALSE, automatically set FUV element
+     * Otherwise set only if entire PUM row is TRUE 
+     */
+    for(int row = 0; row < 15; row++) {
+        //Test diagonal elements of the PUM
+        if(PUM[row][row] == FALSE ) {
+            FUV[row] = TRUE;
+            continue; 
+        }
+        
+        char flag = TRUE; 
+        for(int col = 0; col < 15; col++) {
+            if(PUM[row][col] == FALSE) {
+                flag = FALSE;
+            }
+        }
+        FUV[row] = flag;
+    }
+
+    // Set the final launch enable if the FUV elements are all TRUE
+    LAUNCH = TRUE;
+    for(int row = 0; row < 15; row++) {
+        if(FUV[row] == FALSE) {
+            LAUNCH = FALSE;
+        }
+    }
+
 } // End function DECIDE()
 
 
