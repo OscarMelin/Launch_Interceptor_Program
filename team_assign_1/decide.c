@@ -13,7 +13,8 @@
 
    
 #include "decide.h"
-
+#define TRUE 1
+#define FALSE 0
 
 void LIC_0() {
 
@@ -32,8 +33,9 @@ void DECIDE(void) {
     LIC_1();
 
     // Loop through and populate the PUM
-    for(int row = 0; row < 15; row++) {
-        for(int col = 0; col < 15; col++) {
+    int row, col;
+    for(row = 0; row < 15; row++) {
+        for(col = 0; col < 15; col++) {
             //Skip diagonal elements of the PUM, they are inputs.
             if(row == col) {
                 continue;
@@ -65,15 +67,15 @@ void DECIDE(void) {
      * If the PUM diagonal element is FALSE, automatically set FUV element
      * Otherwise set only if entire PUM row is TRUE 
      */
-    for(int row = 0; row < 15; row++) {
+    for(row = 0; row < 15; row++) {
         //Test diagonal elements of the PUM
         if(PUM[row][row] == FALSE ) {
             FUV[row] = TRUE;
             continue; 
         }
         
-        char flag = TRUE; 
-        for(int col = 0; col < 15; col++) {
+        boolean flag = TRUE; 
+        for(col = 0; col < 15; col++) {
             if(PUM[row][col] == FALSE) {
                 flag = FALSE;
             }
@@ -83,7 +85,7 @@ void DECIDE(void) {
 
     // Set the final launch enable if the FUV elements are all TRUE
     LAUNCH = TRUE;
-    for(int row = 0; row < 15; row++) {
+    for(row = 0; row < 15; row++) {
         if(FUV[row] == FALSE) {
             LAUNCH = FALSE;
         }
