@@ -27,8 +27,6 @@ void LIC_0()
 		double y2 = Y[i + 1];
 
 		distance = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
-		printf("distance is %f\n", distance);
-
 		// Calculate the distance between each set of consecutive data points.
 		//if distance exceeds LENGTH1 CMV[0] is set to true or 1 and looping is terminated.
 
@@ -44,13 +42,6 @@ void LIC_0()
 		}
 		i++;
 	}
-	printf("LIC condition is met for data points %d and %d\n", i, i+1);
-	printf("CMV[0] = %d\n", CMV[0]);
 	
 }// end of LOC_0
 
-// Function call
-int main()
-{	
-	LIC_0();
-}
