@@ -1,12 +1,4 @@
-#include"stdio.h"
-#include"math.h"
-
 //function to find the distance between two consecutive data points.
-
-const double LENGTH1 = 14;//  These will be provided before the function is called.
-int NUMPOINTS = 6;//
-int X[100] = { 1, 2, 3, 5, 11, 21, 16, 15 };
-int Y[100] = { 4, 5, 7, 9, 1, 17, 29, 19 };
 
 void LIC_0()
 {
@@ -27,6 +19,8 @@ void LIC_0()
 		double y2 = Y[i + 1];
 
 		distance = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+		printf("distance is %f\n", distance);
+
 		// Calculate the distance between each set of consecutive data points.
 		//if distance exceeds LENGTH1 CMV[0] is set to true or 1 and looping is terminated.
 
@@ -42,6 +36,8 @@ void LIC_0()
 		}
 		i++;
 	}
+	printf("LIC condition is met for data points %d and %d\n", i, i+1);
+	printf("CMV[0] = %d\n", CMV[0]);
 	
 }// end of LOC_0
 
