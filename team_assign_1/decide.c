@@ -40,12 +40,12 @@ void LIC_0() {
 		if (DOUBLECOMPARE(distance, PARAMETERS.LENGTH1) == GT)
 		{
 			flag = 1;
-			CMV[0] = 1;
+			CMV[0] = TRUE;
 			break;
 		}
 		else
 		{
-			CMV[0] = 1;
+			CMV[0] = FALSE;
 		}
 		i++;
 	}
