@@ -15,7 +15,7 @@
 //If the distance between any two datapoints is grater than
 //LENGTH1, writes 1 into CMV[0].
 
-void LIC_0() {
+void LIC_0() 
 {
 	int i = 0;
 	int flag = 0;
