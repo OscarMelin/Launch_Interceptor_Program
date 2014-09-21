@@ -17,7 +17,6 @@
 
 void LIC_0() {
 {
-	int CMV[1] = { 0 };
 	int i = 0;
 	int flag = 0;
 	double distance;
