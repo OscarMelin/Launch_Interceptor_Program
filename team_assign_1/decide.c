@@ -37,7 +37,7 @@ void LIC_0() {
 		// Calculate the distance between each set of consecutive data points.
 		//if distance exceeds LENGTH1 CMV[0] is set to true or 1 and looping is terminated.
 
-		if (distance >  LENGTH1)
+		if (DOUBLECOMPARE(distance, LENGTH1) == GT)
 		{
 			flag = 1;
 			CMV[0] = 1;
