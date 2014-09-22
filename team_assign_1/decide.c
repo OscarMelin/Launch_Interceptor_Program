@@ -101,7 +101,7 @@ void LIC_1() {
         // Find the angle where these two lines intersect, if greater than 90
         // then the line made by p1 and p3 is the diameter of the circle
         double theta1 = get_angle(l12,l13,l23);
-        if (theta1 > PI/2) {
+        if (DOUBLECOMPARE(theta1,PI/2)==GT) {
             // If this is greater than RADIUS1 then set the CMV and return
             if (DOUBLECOMPARE(l23/2,PARAMETERS.RADIUS1)==GT) {
                 CMV[1] = TRUE;
@@ -112,7 +112,7 @@ void LIC_1() {
         }
         // If the angle is <= 90, then check one more angle
         double theta2 = get_angle(l12,l23,l13);
-        if (theta2 > PI/2) {
+        if (DOUBLECOMPARE(theta2,PI/2)==GT) {
             // If this is greater than RADIUS1 then set the CMV and return
             if (DOUBLECOMPARE(l13/2,PARAMETERS.RADIUS1)==GT) {
                 CMV[1] = TRUE;
@@ -122,7 +122,7 @@ void LIC_1() {
                 continue;
         }
         // Check the last angle
-        if (theta1+theta2 < PI/2) {
+        if (DOUBLECOMPARE(theta1+theta2,PI/2)==LT) {
             if (DOUBLECOMPARE(l12/2,PARAMETERS.RADIUS1)==GT) {
                 CMV[1] = TRUE;
                 return;
@@ -138,7 +138,7 @@ void LIC_1() {
         double center_y = -1/m_a*(center_x-(x1+x2)/2)+(y1+y2)/2;
         // All three points lie on the circle, so calculate the distance from
         // here out
-        double radius = sqrt(pow(center_x-x1,2)+pow(center_y-y1,2));
+        double radius = get_distance(center_x,x1,center_y,y1);
         if (DOUBLECOMPARE(radius,PARAMETERS.RADIUS1)==GT) {
             CMV[1] = TRUE;
             return;
