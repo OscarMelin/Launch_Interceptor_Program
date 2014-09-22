@@ -177,7 +177,7 @@ void DECIDE(void) {
                     }
                     break;
                 case ORR:
-                    if(CMV[row] && CMV[col]) {
+                    if(CMV[row] || CMV[col]) {
                         PUM[row][col] = TRUE;
                     } else {
                         PUM[row][col] = FALSE;
