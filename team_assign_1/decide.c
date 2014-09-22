@@ -42,7 +42,7 @@ void LIC_0()
 
 	//loop through i data points.
 
-	while (i<NUMPOINTS && flag ==0)
+	while (i<NUMPOINTS-1 && flag ==0)
 	{
 		// Get the coordinates for the two consecutive points
 
