@@ -90,6 +90,13 @@ void LIC_1() {
         double l12 = get_distance(x1,x2,y1,y2);
         double l13 = get_distance(x1,x3,y1,y3);
         double l23 = get_distance(x2,x3,y2,y3);
+        
+        //To include a case where all the three points are the same.
+        if((x1 == x2 == x3)&&(y1 == y2 == y3))
+        {
+        	CMV[1]=FALSE;
+        	break;
+        }
 
         // Find the angle where these two lines intersect, if greater than 90
         // then the line made by p1 and p3 is the diameter of the circle
