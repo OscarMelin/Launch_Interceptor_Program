@@ -15,17 +15,21 @@
 #define TRUE 1
 #define FALSE 0
 
-double get_distance(double x1, double x2, double y1, double y2)
+// Takes x and y coordinates for two cartesian points and returns the distance
+// between the two points
+inline double get_distance(double x1, double x2, double y1, double y2)
 {
     return sqrt(pow(x1-x2,2)+pow(y1-y2,2));
 }
 
-double get_angle(double l12, double l13, double l23)
+// Takes the distance between three points and returns the angle <213
+inline double get_angle(double l12, double l13, double l23)
 {
     return acos((pow(l12,2)+pow(l13,2)-pow(l23,2))/(2*l12*l13));
 }
 
-double get_slope(double x1, double x2, double y1, double y2)
+// Takes the x and y coordinates of two cartesian points and returns the slope
+inline double get_slope(double x1, double x2, double y1, double y2)
 {
     return (y1-y2)/(x1-x2);
 }
@@ -103,13 +107,12 @@ void LIC_1() {
         double l13 = get_distance(x1,x3,y1,y3);
         double l23 = get_distance(x2,x3,y2,y3);
         
-       //To include a case where all the three points are the same.
-
-if(((x1 == x2)&&(x2 == x3))&&((y1 == y2)&&(y2 == y3)))
-{
-CMV[1]=FALSE;
-break;
-}
+        //To include a case where all the three points are the same.
+        if(((x1 == x2)&&(x2 == x3))&&((y1 == y2)&&(y2 == y3)))
+        {
+        	CMV[1]=FALSE;
+        	break;
+        }
 
         // Find the angle where these two lines intersect, if greater than 90
         // then the line made by p1 and p3 is the diameter of the circle
