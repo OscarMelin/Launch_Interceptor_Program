@@ -107,7 +107,6 @@ void LIC_1() {
 
 if(((x1 == x2)&&(x2 == x3))&&((y1 == y2)&&(y2 == y3)))
 {
-printf("three points are same");
 CMV[1]=FALSE;
 break;
 }
@@ -219,8 +218,6 @@ double l13 = get_distance(x1,x3,y1,y3);
 double l23 = get_distance(x2,x3,y2,y3);
 double hp = (l12+l13+l23)/2; // calculating half-perimeter
 double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
-printf("lenghts of sides are %f %f %f\n",l12,l13,l23);
-printf("area is %f\n",area);
 if (DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
 {
 CMV[3] = 1;
@@ -256,9 +253,9 @@ else if(z == 3)
 q3++;
 else
 q4++;
-printf("X[%d]Y[%d] = (%f %f)\n",j,j,X[j],Y[j]);
-printf("quadrant of data point %d is %f\n",j,z);
-printf("q1 = %d\nq2 = %d\nq3 = %d\nq4 = %d\n",q1,q2,q3,q4);
+//printf("X[%d]Y[%d] = (%f %f)\n",j,j,X[j],Y[j]);
+//printf("quadrant of data point %d is %f\n",j,z);
+//printf("q1 = %d\nq2 = %d\nq3 = %d\nq4 = %d\n",q1,q2,q3,q4);
 }//closes inner for loop for Q_PTS
 
 switch(QUADS)
