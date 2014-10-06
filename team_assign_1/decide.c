@@ -112,7 +112,8 @@ void LIC_1() {
         double l23 = get_distance(x2,x3,y2,y3);
         
         //To include a case where all the three points are the same.
-        if(((x1 == x2)&&(x2 == x3))&&((y1 == y2)&&(y2 == y3)))
+        if((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(x2,x3)==EQ)&&
+                (DOUBLECOMPARE(y1,y2)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ))
         {
         	CMV[1]=FALSE;
         	break;
@@ -190,7 +191,8 @@ void LIC_2()
         double angle = get_angle(l12,l13,l23);
         //To include a case where all the three points are the same.
 
-        if(((x1 == x2)&&(x2 == x3))&&((y1 == y2)&&(y2 == y3)))
+        if((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(x2,x3)==EQ)&&
+                (DOUBLECOMPARE(y1,y2)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ))
         {
             CMV[2]=FALSE;
             break;
