@@ -11,11 +11,12 @@
  *    based upon input radar tracking information.
  */
 
+#include "test.h"
 #include "decide.h"
 #define TRUE 1
 #define FALSE 0
 
-// Takes x and y coordinates for two cartesian points and returns the distance
+// Takes x and y coordinates for two Cartesian points and returns the distance
 // between the two points
 inline double get_distance(double x1, double x2, double y1, double y2)
 {
@@ -28,7 +29,7 @@ inline double get_angle(double l12, double l13, double l23)
     return acos((pow(l12,2)+pow(l13,2)-pow(l23,2))/(2*l12*l13));
 }
 
-// Takes the x and y coordinates of two cartesian points and returns the slope
+// Takes the x and y coordinates of two Cartesian points and returns the slope
 inline double get_slope(double x1, double x2, double y1, double y2)
 {
     return (y1-y2)/(x1-x2);
