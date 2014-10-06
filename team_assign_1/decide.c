@@ -27,7 +27,7 @@ inline double get_distance(double x1, double x2, double y1, double y2)
 // Takes the distance between three points and returns the angle <213
 inline double get_angle(double l12, double l13, double l23)
 {
-    return acos((pow(l12,2)+pow(l13,2)-pow(l23,2))/(2*l12*l13));
+return acos((pow(l12,2)+pow(l13,2)-pow(l23,2))/(2*l12*l13));
 }
 
 // Takes the x and y coordinates of two Cartesian points and returns the slope
@@ -39,14 +39,17 @@ inline double get_slope(double x1, double x2, double y1, double y2)
 double get_quadrant(double x1, double y1)//Returns quadrant based on priority
                                          //ordering when a point is in conflict
 {
-    if (x1>=0&&y1>=0)
-        return 1;
-    else if (x1<0&&y1>=0)
-        return 2;
-    else if(x1<=0&&y1<0)
-        return 3;
-    else 
-        return 4;
+//if (x1>=0&&y1>=0)
+if(((DOUBLECOMPARE(x1,0)==GT)||(DOUBLECOMPARE(x1,0)==EQ))&&((DOUBLECOMPARE(y1,0)==GT)||(DOUBLECOMPARE(y1,0)==EQ)))
+return 1;
+//if (x1<0&&y1>=0)
+if((DOUBLECOMPARE(x1,0)==LT)&&((DOUBLECOMPARE(y1,0)==GT)||(DOUBLECOMPARE(y1,0)==EQ)))
+return 2;
+//if(x1<=0&&y1<0)
+if(((DOUBLECOMPARE(x1,0)==LT)||(DOUBLECOMPARE(x1,0)==EQ))&&(DOUBLECOMPARE(y1,0)==LT))
+return 3;
+else
+return 4;
 } 
 
 //LIC_0() is checks the distance between consec. data points.
