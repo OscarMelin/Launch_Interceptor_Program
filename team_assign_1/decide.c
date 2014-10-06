@@ -189,27 +189,28 @@ void LIC_2()
         double l13 = get_distance(x1,x3,y1,y3);
         double l23 = get_distance(x2,x3,y2,y3);
         double angle = get_angle(l12,l13,l23);
-        //To include a case where all the three points are the same.
-
-        if((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(x2,x3)==EQ)&&
-                (DOUBLECOMPARE(y1,y2)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ))
-        {
-            CMV[2]=FALSE;
+	
+        //To include a case where any two points are the same. Check if x1==x2 && y1==y2 ||x1==x3 && y1==y3 || x2==x3 && y2==y3
+        if((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(y1,y2)==EQ)||
+                (DOUBLECOMPARE(x1,x3)==EQ)&&(DOUBLECOMPARE(y1,y3)==EQ)||
+			(DOUBLECOMPARE(x2,x3)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ))
             break;
-        }
+	if((DOUBLECOMPARE(angle,PI)==EQ))
+	    break;	
+
+	// checks for angle < (PI − EPSILON)or angle > (PI + EPSILON)
         else if((DOUBLECOMPARE(angle,(PI+PARAMETERS.EPSILON))==GT)||
                 (DOUBLECOMPARE(angle,(PI-PARAMETERS.EPSILON))==LT))
         {
             CMV[2]=TRUE;
-            break;
-        }//closes else if
+        }
     }//closes for
-    //printf("CMV[2]= %d\n",CMV[2]);
 }//end of LIC_2()
 
 
 //Funtion that checks if area formed by three consecutive data points is greater
 //than AREA1 
+
 void LIC_3()
 {
     CMV[3] = FALSE;
@@ -231,16 +232,16 @@ void LIC_3()
         double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
         if (DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
         {
-            CMV[3] = 1;
+            CMV[3] = TRUE;
             return;
         }
-        else
-            CMV[3] = 0;
     }//closes for loop
-}// closes LIC3 function
+}// end of LIC3 functions LIC3 function
 
 
 
+//Finds set of Q_PTS consecutive data points that lie in more than QUADS
+//quadrants.
 //Finds set of Q_PTS consecutive data points that lie in more than QUADS
 //quadrants.
 void LIC_4()
@@ -266,12 +267,8 @@ void LIC_4()
             else if(z == 3)
                 q3++;
             else
-                q4++;
-            //printf("X[%d]Y[%d] = (%f %f)\n",j,j,X[j],Y[j]);
-            //printf("quadrant of data point %d is %f\n",j,z);
-            //printf("q1 = %d\nq2 = %d\nq3 = %d\nq4 = %d\n",q1,q2,q3,q4);
+                q4++;           
         }//closes inner for loop for Q_PTS
-
         switch(PARAMETERS.QUADS)
         {
             //more than 1 Quad
@@ -280,7 +277,6 @@ void LIC_4()
                             (q3==PARAMETERS.Q_PTS)||(q4==PARAMETERS.Q_PTS)))
                 {
                     CMV[4]=TRUE;
-                    printf("More than 1 Quad\n");
                     break;
                 }
                 //more than 2 Quad
@@ -288,7 +284,6 @@ void LIC_4()
                 if(q1==0||q2==0||q3==0||q4==0)
                 {
                     CMV[4]=TRUE;
-                    printf("More than 2 Quad\n");
                     break;
                 }
                 //more than 3 Quad
@@ -296,14 +291,11 @@ void LIC_4()
                 if((q1*q2*q3*q4)>0)
                 {
                     CMV[4]=TRUE;
-                    printf("More than 3 Quad\n");
                     break;
                 }
         }
     }//closes for loop
-    //printf("CMV[4]= %d\n",CMV[4]);
-}// end of LIC4 function
-
+}// end of LIC4 function LIC4 function
 
 //check for the condition (X[i+1]-X[i])<0
 void LIC_5()
@@ -317,9 +309,8 @@ void LIC_5()
         {
             CMV[5]= TRUE;
             break;
-        }//closes if
+        }
     }//closes for
-    printf("CMV[5]=%d\n",CMV[5]);
 }//end of LIC_5()
 
 
