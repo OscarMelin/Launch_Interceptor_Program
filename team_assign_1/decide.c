@@ -13,6 +13,7 @@
 
 #include "test.h"
 #include "decide.h"
+#include <stdio.h>
 #define TRUE 1
 #define FALSE 0
 
@@ -35,16 +36,17 @@ inline double get_slope(double x1, double x2, double y1, double y2)
     return (y1-y2)/(x1-x2);
 }
 
-double get_quadrant(double x1, double y1)//Returns quadrant based on priority ordering when a point is in conflict
+double get_quadrant(double x1, double y1)//Returns quadrant based on priority
+                                         //ordering when a point is in conflict
 {
-if (x1>=0&&y1>=0)
-return 1;
-else if (x1<0&&y1>=0)
-return 2;
-else if(x1<=0&&y1<0)
-return 3;
-else 
-return 4;
+    if (x1>=0&&y1>=0)
+        return 1;
+    else if (x1<0&&y1>=0)
+        return 2;
+    else if(x1<=0&&y1<0)
+        return 3;
+    else 
+        return 4;
 } 
 
 //LIC_0() is checks the distance between consec. data points.
@@ -53,37 +55,38 @@ return 4;
 
 void LIC_0() 
 {
-	int i = 0;
-	int flag = 0;
-	double distance;
+    int i = 0;
+    int flag = 0;
+    double distance;
 
-	//loop through i data points.
+    //loop through i data points.
 
-	while (i<NUMPOINTS-1 && flag ==0)
-	{
-		// Get the coordinates for the two consecutive points
+    while (i<NUMPOINTS-1 && flag ==0)
+    {
+        // Get the coordinates for the two consecutive points
 
-		double x1 = X[i];
-		double x2 = X[i + 1];
-		double y1 = Y[i];
-		double y2 = Y[i + 1];
+        double x1 = X[i];
+        double x2 = X[i + 1];
+        double y1 = Y[i];
+        double y2 = Y[i + 1];
 
-		distance = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
-		// Calculate the distance between each set of consecutive data points.
-		//if distance exceeds LENGTH1 CMV[0] is set to true or 1 and looping is terminated.
+        distance = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+        // Calculate the distance between each set of consecutive data points.
+        //if distance exceeds LENGTH1 CMV[0] is set to true or 1 and looping is
+        //terminated.
 
-		if (DOUBLECOMPARE(distance, PARAMETERS.LENGTH1) == GT)
-		{
-			flag = 1;
-			CMV[0] = TRUE;
-			break;
-		}
-		else
-		{
-			CMV[0] = FALSE;
-		}
-		i++;
-	}
+        if (DOUBLECOMPARE(distance, PARAMETERS.LENGTH1) == GT)
+        {
+            flag = 1;
+            CMV[0] = TRUE;
+            break;
+        }
+        else
+        {
+            CMV[0] = FALSE;
+        }
+        i++;
+    }
 } // End function LIC_0()
 
 /*
@@ -169,148 +172,152 @@ void LIC_1() {
 //Checks the angle condition mentioned in specification 2.
 void LIC_2() 
 {
-CMV[2] = FALSE;
-// Loop through X and Y
-int i;
-for (i=0;i<NUMPOINTS-2;++i) 
-{
-// Get the coordinates for the three points
-double x1 = X[i];
-double x2 = X[i+1];
-double x3 = X[i+2];
-double y1 = Y[i];
-double y2 = Y[i+1];
-double y3 = Y[i+2];
-double l12 = get_distance(x1,x2,y1,y2);
-double l13 = get_distance(x1,x3,y1,y3);
-double l23 = get_distance(x2,x3,y2,y3);
-double angle = get_angle(l12,l13,l23);
-//To include a case where all the three points are the same.
+    CMV[2] = FALSE;
+    // Loop through X and Y
+    int i;
+    for (i=0;i<NUMPOINTS-2;++i) 
+    {
+        // Get the coordinates for the three points
+        double x1 = X[i];
+        double x2 = X[i+1];
+        double x3 = X[i+2];
+        double y1 = Y[i];
+        double y2 = Y[i+1];
+        double y3 = Y[i+2];
+        double l12 = get_distance(x1,x2,y1,y2);
+        double l13 = get_distance(x1,x3,y1,y3);
+        double l23 = get_distance(x2,x3,y2,y3);
+        double angle = get_angle(l12,l13,l23);
+        //To include a case where all the three points are the same.
 
-if(((x1 == x2)&&(x2 == x3))&&((y1 == y2)&&(y2 == y3)))
-{
-CMV[2]=FALSE;
-break;
-}
-else if((DOUBLECOMPARE(angle,(PI+EPSILON))==GT)||(DOUBLECOMPARE(angle,(PI-EPSILON))==LT))
-{
-CMV[2]=TRUE;
-break;
-}//closes else if
-}//closes for
-//printf("CMV[2]= %d\n",CMV[2]);
+        if(((x1 == x2)&&(x2 == x3))&&((y1 == y2)&&(y2 == y3)))
+        {
+            CMV[2]=FALSE;
+            break;
+        }
+        else if((DOUBLECOMPARE(angle,(PI+PARAMETERS.EPSILON))==GT)||
+                (DOUBLECOMPARE(angle,(PI-PARAMETERS.EPSILON))==LT))
+        {
+            CMV[2]=TRUE;
+            break;
+        }//closes else if
+    }//closes for
+    //printf("CMV[2]= %d\n",CMV[2]);
 }//end of LIC_2()
 
 
-//Funtion that checks if area formed by three consecutive data points is greater than AREA1 
+//Funtion that checks if area formed by three consecutive data points is greater
+//than AREA1 
 void LIC_3()
 {
-CMV[3] = FALSE;
-int i;
-// Loop through X and Y
-for (i=0;i<NUMPOINTS-2;++i) 
-{
-// Get the coordinates for the three points
-double x1 = X[i];
-double x2 = X[i+1];
-double x3 = X[i+2];
-double y1 = Y[i];
-double y2 = Y[i+1];
-double y3 = Y[i+2];
-double l12 = get_distance(x1,x2,y1,y2);
-double l13 = get_distance(x1,x3,y1,y3);
-double l23 = get_distance(x2,x3,y2,y3);
-double hp = (l12+l13+l23)/2; // calculating half-perimeter
-double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
-if (DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
-{
-CMV[3] = 1;
-return;
-}
-else
-CMV[3] = 0;
-}//closes for loop
+    CMV[3] = FALSE;
+    int i;
+    // Loop through X and Y
+    for (i=0;i<NUMPOINTS-2;++i) 
+    {
+        // Get the coordinates for the three points
+        double x1 = X[i];
+        double x2 = X[i+1];
+        double x3 = X[i+2];
+        double y1 = Y[i];
+        double y2 = Y[i+1];
+        double y3 = Y[i+2];
+        double l12 = get_distance(x1,x2,y1,y2);
+        double l13 = get_distance(x1,x3,y1,y3);
+        double l23 = get_distance(x2,x3,y2,y3);
+        double hp = (l12+l13+l23)/2; // calculating half-perimeter
+        double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
+        if (DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
+        {
+            CMV[3] = 1;
+            return;
+        }
+        else
+            CMV[3] = 0;
+    }//closes for loop
 }// closes LIC3 function
 
 
 
-//Finds set of Q_PTS consecutive data points that lie in more than QUADS quadrants.
+//Finds set of Q_PTS consecutive data points that lie in more than QUADS
+//quadrants.
 void LIC_4()
 {
-CMV[4] = FALSE;
-int i,j,q1,q2,q3,q4;
+    CMV[4] = FALSE;
+    int i,j,q1,q2,q3,q4;
 
-for(i=0;i<NUMPOINTS;i++)//NUMPOINTS
-{
-q1 = 0;
-q2 = 0;
-q3 = 0;
-q4 = 0;
-for(j=i;(j<i+Q_PTS)&&(i+Q_PTS<NUMPOINTS+1);j++)// iterate over Q_PTS consecutive points and stop if you reach the last NUMPOINT
-{
-double z = get_quadrant(X[j],Y[j]);
-if(z == 1)
-q1++;
-else if(z == 2)
-q2++;
-else if(z == 3)
-q3++;
-else
-q4++;
-//printf("X[%d]Y[%d] = (%f %f)\n",j,j,X[j],Y[j]);
-//printf("quadrant of data point %d is %f\n",j,z);
-//printf("q1 = %d\nq2 = %d\nq3 = %d\nq4 = %d\n",q1,q2,q3,q4);
-}//closes inner for loop for Q_PTS
+    for(i=0;i<NUMPOINTS;i++)//NUMPOINTS
+    {
+        q1 = 0;
+        q2 = 0;
+        q3 = 0;
+        q4 = 0;
+        // iterate over Q_PTS consecutive points and stop if you reach the last
+        // NUMPOINT
+        for(j=i;(j<i+PARAMETERS.Q_PTS)&&(i+PARAMETERS.Q_PTS<NUMPOINTS+1);j++)
+        {
+            double z = get_quadrant(X[j],Y[j]);
+            if(z == 1)
+                q1++;
+            else if(z == 2)
+                q2++;
+            else if(z == 3)
+                q3++;
+            else
+                q4++;
+            //printf("X[%d]Y[%d] = (%f %f)\n",j,j,X[j],Y[j]);
+            //printf("quadrant of data point %d is %f\n",j,z);
+            //printf("q1 = %d\nq2 = %d\nq3 = %d\nq4 = %d\n",q1,q2,q3,q4);
+        }//closes inner for loop for Q_PTS
 
-switch(QUADS)
-{
-//more than 1 Quad
-case 1:
-	if(!((q1==Q_PTS)||(q2==Q_PTS)||(q3==Q_PTS)||(q4==Q_PTS)))
-		{
-		CMV[4]=TRUE;
-		printf("More than 1 Quad\n");
-		break;
-		}
-//more than 2 Quad
-case 2:
-	if(q1==0||q2==0||q3==0||q4==0)
-		{
-		CMV[4]=TRUE;
-		printf("More than 2 Quad\n");
-		break;
-		}
-//more than 3 Quad
-case 3:
-	if((q1*q2*q3*q4)>0)
-		{
-		CMV[4]=TRUE;
-		printf("More than 3 Quad\n");
-		break;
-		}
-}
-}//closes for loop
-//printf("CMV[4]= %d\n",CMV[4]);
+        switch(PARAMETERS.QUADS)
+        {
+            //more than 1 Quad
+            case 1:
+                if(!((q1==PARAMETERS.Q_PTS)||(q2==PARAMETERS.Q_PTS)||
+                            (q3==PARAMETERS.Q_PTS)||(q4==PARAMETERS.Q_PTS)))
+                {
+                    CMV[4]=TRUE;
+                    printf("More than 1 Quad\n");
+                    break;
+                }
+                //more than 2 Quad
+            case 2:
+                if(q1==0||q2==0||q3==0||q4==0)
+                {
+                    CMV[4]=TRUE;
+                    printf("More than 2 Quad\n");
+                    break;
+                }
+                //more than 3 Quad
+            case 3:
+                if((q1*q2*q3*q4)>0)
+                {
+                    CMV[4]=TRUE;
+                    printf("More than 3 Quad\n");
+                    break;
+                }
+        }
+    }//closes for loop
+    //printf("CMV[4]= %d\n",CMV[4]);
 }// end of LIC4 function
 
 
 //check for the condition (X[i+1]-X[i])<0
-LIC_5()
+void LIC_5()
 {
-CMV[5] = FALSE;
-// Loop through X and Y
-int i;
-for (i=0;i<NUMPOINTS-1;++i)  // Get the coordinates for two points 
-{
-double x1 = X[i];
-double x2 = X[i+1];
-if((X[i+1]-X[i])<0)
-{
-CMV[5]= TRUE;
-break;
-}//closes if
-}//closes for
-printf("CMV[5]=%d\n",CMV[5]);
+    CMV[5] = FALSE;
+    // Loop through X and Y
+    int i;
+    for (i=0;i<NUMPOINTS-1;++i)  // Get the coordinates for two points 
+    {
+        if((X[i+1]-X[i])<0)
+        {
+            CMV[5]= TRUE;
+            break;
+        }//closes if
+    }//closes for
+    printf("CMV[5]=%d\n",CMV[5]);
 }//end of LIC_5()
 
 
@@ -381,5 +388,3 @@ void DECIDE(void) {
 
 } // End function DECIDE()
 
-
- 
