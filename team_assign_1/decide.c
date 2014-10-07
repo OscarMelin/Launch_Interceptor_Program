@@ -192,7 +192,8 @@ void LIC_2()
         double l13 = get_distance(x1,x3,y1,y3);
         double l23 = get_distance(x2,x3,y2,y3);
         double angle = get_angle(l12,l13,l23);
-	
+	if(DOUBLECOMPARE(angle,0.0)==EQ)
+	angle = PI;
         //To include a case where any two points are the same. Check if x1==x2 && y1==y2 ||x1==x3 && y1==y3 || x2==x3 && y2==y3
         if((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(y1,y2)==EQ)||
                 (DOUBLECOMPARE(x1,x3)==EQ)&&(DOUBLECOMPARE(y1,y3)==EQ)||
