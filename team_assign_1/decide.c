@@ -35,6 +35,16 @@ inline double get_slope(double x1, double x2, double y1, double y2)
 {
     return (y1-y2)/(x1-x2);
 }
+// Takes slope and y intercept of the line (y = mx + c) and returns distance of point from the line.
+inline double pt_line_distance(double m,double c,double x1, double y1)
+{
+double z;
+z = (m*x1 - y1 + c)/sqrt((pow(m,2)+1));
+if (DOUBLECOMPARE(z,0)==GT||DOUBLECOMPARE(z,0)==EQ) 
+return z;
+else
+return -1*z;
+}
 
 double get_quadrant(double x1, double y1)//Returns quadrant based on priority
                                          //ordering when a point is in conflict
@@ -243,9 +253,6 @@ void LIC_3()
 }// end of LIC3 functions LIC3 function
 
 
-
-//Finds set of Q_PTS consecutive data points that lie in more than QUADS
-//quadrants.
 //Finds set of Q_PTS consecutive data points that lie in more than QUADS
 //quadrants.
 void LIC_4()
@@ -316,6 +323,42 @@ void LIC_5()
         }
     }//closes for
 }//end of LIC_5()
+
+// *****************LIC_6************************ 
+void LIC_6()
+{
+CMV[6] = FALSE;
+if(NUMPOINTS <3) //return if NUMPOINTS <3
+return;
+int i,j;
+double m,c,d;
+for(i=0;(i+PARAMETERS.N_PTS-1< NUMPOINTS);i++)
+{
+for(j=i+1;j<i+PARAMETERS.N_PTS-1;j++)
+{ 
+if((X[i]==X[i+PARAMETERS.PARAMETERS.N_PTS-1])&&(Y[i]==Y[i+PARAMETERS.N_PTS-1]))// if two points are coincident
+{
+d = get_distance(X[i],X[j],Y[i],Y[j]);
+if (DOUBLECOMPARE(d,PARAMETERS_DIST)==GT) 
+{
+CMV[6] = TRUE;
+return;
+}
+}//closes if statement which tests whether two points are coincident.
+else
+{
+m = get_slope(X[i],X[i+PARAMETERS.N_PTS-1],Y[i],Y[i+PARAMETERS.N_PTS-1]);
+c = Y[i]-m*X[i];
+d = pt_line_distance(m,c,X[j],Y[j]);
+if (DOUBLECOMPARE(d,PARAMETERS_DIST)==GT) 
+{
+CMV[6] = TRUE;
+return;
+}
+}//closes else
+}//closes inner for loop j
+}//closes outer for loop i
+}//end of LIC_6()
 
 
 void DECIDE(void) {
