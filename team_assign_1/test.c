@@ -154,6 +154,19 @@ MU_TEST(test_triangle_all_angles_acute)
     mu_check(CMV[1]==0);
 }
 
+MU_TEST(test1)
+{
+    X[0] = 0;
+    Y[0] = 0;
+    X[1] = 4.11;
+    Y[1] = -7.37;
+    X[2] = 16.13;
+    Y[2] = -9.35;
+    PARAMETERS.RADIUS1 = 13;
+    LIC_1();
+    mu_check(CMV[1]==0);
+}
+
 MU_TEST_SUITE(test_suite_LIC_1)
 {
     MU_SUITE_CONFIGURE(&test_setup,&test_teardown);
@@ -163,6 +176,7 @@ MU_TEST_SUITE(test_suite_LIC_1)
     MU_RUN_TEST(test_second_angle_obtuse);
     MU_RUN_TEST(test_third_angle_obtuse);
     MU_RUN_TEST(test_triangle_all_angles_acute);
+    MU_RUN_TEST(test1);
 }
 
 int main()
