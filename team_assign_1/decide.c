@@ -360,6 +360,28 @@ return;
 }//closes outer for loop i
 }//end of LIC_6()
 
+/* There exists at least one set of two data points separated by exactly K PTS consecutive intervening points that
+ * are a distance greater than the length, LENGTH1, apart. The condition is not met when NUMPOINTS < 3.
+ * 1 ≤ K PTS ≤ (NUMPOINTS − 2)
+ */
+
+void LIC_7()
+{
+CMV[7]=FALSE;
+if(NUMPOINTS <3) //return if NUMPOINTS <3
+return;
+int i;
+float d;
+for(i=0;(i+PARAMETERS.K_PTS+1< NUMPOINTS);i++)
+{
+d= get_distance(X[i],X[i+PARAMETERS.K_PTS+1],Y[i],Y[i+PARAMETERS.K_PTS+1]);
+if (DOUBLECOMPARE(d,PARAMETER.LENGTH1)==GT)
+{
+CMV[7]=TRUE;
+return;
+} 
+}
+}//end of LIC_7()
 
 void DECIDE(void) {
 
