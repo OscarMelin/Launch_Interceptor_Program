@@ -383,6 +383,38 @@ return;
 }
 }//end of LIC_7()
 
+
+//*****************LIC10()*********************
+void LIC_10()
+{
+CMV[10]=FALSE;
+if(NUMPOINTS < 5)
+return;
+int i;
+for(i=0;(i+PARAMETERS.E_PTS+PARAMETERS.F_PTS+1+1< NUMPOINTS);i++)
+{
+double x1 = X[i];
+double x2 = X[i+PARAMETERS.E_PTS+1];
+double x3 = X[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+double y1 = Y[i];
+double y2 = Y[i+PARAMETERS.E_PTS+1];
+double y3 = Y[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+double l12 = get_distance(x1,x2,y1,y2);
+double l13 = get_distance(x1,x3,y1,y3);
+double l23 = get_distance(x2,x3,y2,y3);
+double hp = (l12+l13+l23)/2; // calculating half-perimeter
+double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
+if(DOUBLECOMPARE(area,PARAMETER_AREA1)==GT)
+{
+CMV[10]=TRUE;
+return;
+}
+}
+}//End of LIC_10
+
+
+
+
 void DECIDE(void) {
 
     // Call launch interceptor condition functions
