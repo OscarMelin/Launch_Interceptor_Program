@@ -360,10 +360,8 @@ return;
 }//closes outer for loop i
 }//end of LIC_6()
 
-/* There exists at least one set of two data points separated by exactly K PTS consecutive intervening points that
- * are a distance greater than the length, LENGTH1, apart. The condition is not met when NUMPOINTS < 3.
- * 1 ≤ K PTS ≤ (NUMPOINTS − 2)
- */
+
+ //*****************LIC7()*********************
 
 void LIC_7()
 {
