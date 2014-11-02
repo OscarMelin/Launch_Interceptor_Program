@@ -336,7 +336,7 @@ for(i=0;(i+PARAMETERS.N_PTS-1< NUMPOINTS);i++)
 {
 for(j=i+1;j<i+PARAMETERS.N_PTS-1;j++)
 { 
-if((X[i]==X[i+PARAMETERS.PARAMETERS.N_PTS-1])&&(Y[i]==Y[i+PARAMETERS.N_PTS-1]))// if two points are coincident
+if((X[i]==X[i+PARAMETERS.PARAMETERS.N_PTS-1])&&(Y[i]==Y[i+PARAMETERS.N_PTS-1]))// if two points are coincident(need to use doublecompare)
 {
 d = get_distance(X[i],X[j],Y[i],Y[j]);
 if (DOUBLECOMPARE(d,PARAMETERS.DIST)==GT) 
@@ -439,12 +439,12 @@ float d;
 for(i=0;(i+PARAMETERS.K_PTS+1< NUMPOINTS);i++)
 {
   d= get_distance(X[i],X[i+PARAMETERS.K_PTS+1],Y[i],Y[i+PARAMETERS.K_PTS+1]);
-	if (DOUBLECOMPARE(d,PARAMETER_LENGTH1)==GT)
+	if (DOUBLECOMPARE(d,PARAMETERS.LENGTH1)==GT)
 	{
 	  for(j=0;(j+PARAMETERS.K_PTS+1< NUMPOINTS);j++)
           {
 	    d= get_distance(X[j],X[j+PARAMETERS.K_PTS+1],Y[j],Y[j+PARAMETERS.K_PTS+1]);
-	      if (DOUBLECOMPARE(d,PARAMETER_LENGTH2)==LT)
+	      if (DOUBLECOMPARE(d,PARAMETERS.LENGTH2)==LT)
 	      {
 		CMV[12]=TRUE;
 		return;
