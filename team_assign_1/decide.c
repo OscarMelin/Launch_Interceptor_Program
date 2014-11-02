@@ -316,7 +316,7 @@ void LIC_5()
     int i;
     for (i=0;i<NUMPOINTS-1;++i)  // Get the coordinates for two points 
     {
-        if((X[i+1]-X[i])<0)
+        if(DOUBLECOMPARE(X[i+1],X[i])==LT)
         {
             CMV[5]= TRUE;
             break;
@@ -336,7 +336,7 @@ for(i=0;(i+PARAMETERS.N_PTS-1< NUMPOINTS);i++)
 {
 for(j=i+1;j<i+PARAMETERS.N_PTS-1;j++)
 { 
-if((X[i]==X[i+PARAMETERS.PARAMETERS.N_PTS-1])&&(Y[i]==Y[i+PARAMETERS.N_PTS-1]))// if two points are coincident(need to use doublecompare)
+if((DOUBLECOMPARE(X[i],X[i+N_PTS-1])==EQ) && (DOUBLECOMPARE(Y[i],Y[i+N_PTS-1])==EQ))// if two points are coincident
 {
 d = get_distance(X[i],X[j],Y[i],Y[j]);
 if (DOUBLECOMPARE(d,PARAMETERS.DIST)==GT) 
