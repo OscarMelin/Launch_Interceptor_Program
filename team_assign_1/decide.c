@@ -339,7 +339,7 @@ for(j=i+1;j<i+PARAMETERS.N_PTS-1;j++)
 if((X[i]==X[i+PARAMETERS.PARAMETERS.N_PTS-1])&&(Y[i]==Y[i+PARAMETERS.N_PTS-1]))// if two points are coincident
 {
 d = get_distance(X[i],X[j],Y[i],Y[j]);
-if (DOUBLECOMPARE(d,PARAMETERS_DIST)==GT) 
+if (DOUBLECOMPARE(d,PARAMETERS.DIST)==GT) 
 {
 CMV[6] = TRUE;
 return;
@@ -350,7 +350,7 @@ else
 m = get_slope(X[i],X[i+PARAMETERS.N_PTS-1],Y[i],Y[i+PARAMETERS.N_PTS-1]);
 c = Y[i]-m*X[i];
 d = pt_line_distance(m,c,X[j],Y[j]);
-if (DOUBLECOMPARE(d,PARAMETERS_DIST)==GT) 
+if (DOUBLECOMPARE(d,PARAMETERS.DIST)==GT) 
 {
 CMV[6] = TRUE;
 return;
@@ -402,7 +402,7 @@ double l13 = get_distance(x1,x3,y1,y3);
 double l23 = get_distance(x2,x3,y2,y3);
 double hp = (l12+l13+l23)/2; // calculating half-perimeter
 double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
-if(DOUBLECOMPARE(area,PARAMETER_AREA1)==GT)
+if(DOUBLECOMPARE(area,PARAMETER.AREA1)==GT)
 {
 CMV[10]=TRUE;
 return;
