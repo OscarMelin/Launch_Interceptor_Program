@@ -409,6 +409,22 @@ return;
 }
 }
 }//End of LIC_10
+//*************LIC_11()****************************
+LIC_11()
+{
+CMV[11] = FALSE;
+if(NUMPOINTS < 3)
+return;
+int i;
+for(i=0;(i+G_PTS+1< NUMPOINTS);i++)  
+{
+if(DOUBLECOMPARE(X[i+G_PTS+1],X[i])==LT)
+{
+CMV[11]= TRUE;
+return;
+}
+}
+}//end of LIC11
 
 
 
