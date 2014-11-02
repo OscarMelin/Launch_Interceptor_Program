@@ -428,6 +428,34 @@ return;
 
 
 
+//*********************LIC12()*************************
+void LIC_12()
+{
+CMV[12]=FALSE;
+if(NUMPOINTS <3) //return if NUMPOINTS <3
+return;
+int i,j;
+float d;
+for(i=0;(i+PARAMETERS.K_PTS+1< NUMPOINTS);i++)
+{
+  d= get_distance(X[i],X[i+PARAMETERS.K_PTS+1],Y[i],Y[i+PARAMETERS.K_PTS+1]);
+	if (DOUBLECOMPARE(d,PARAMETER_LENGTH1)==GT)
+	{
+	  for(j=0;(j+PARAMETERS.K_PTS+1< NUMPOINTS);j++)
+          {
+	    d= get_distance(X[j],X[j+PARAMETERS.K_PTS+1],Y[j],Y[j+PARAMETERS.K_PTS+1]);
+	      if (DOUBLECOMPARE(d,PARAMETER_LENGTH2)==LT)
+	      {
+		CMV[12]=TRUE;
+		return;
+	      }
+	  } 
+	}
+}
+}//End of LIC_12
+
+
+
 
 void DECIDE(void) {
 
