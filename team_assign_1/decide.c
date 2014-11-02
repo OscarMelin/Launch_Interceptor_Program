@@ -373,7 +373,7 @@ float d;
 for(i=0;(i+PARAMETERS.K_PTS+1< NUMPOINTS);i++)
 {
 d= get_distance(X[i],X[i+PARAMETERS.K_PTS+1],Y[i],Y[i+PARAMETERS.K_PTS+1]);
-if (DOUBLECOMPARE(d,PARAMETER.LENGTH1)==GT)
+if (DOUBLECOMPARE(d,PARAMETERS.LENGTH1)==GT)
 {
 CMV[7]=TRUE;
 return;
@@ -402,7 +402,7 @@ double l13 = get_distance(x1,x3,y1,y3);
 double l23 = get_distance(x2,x3,y2,y3);
 double hp = (l12+l13+l23)/2; // calculating half-perimeter
 double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
-if(DOUBLECOMPARE(area,PARAMETER.AREA1)==GT)
+if(DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
 {
 CMV[10]=TRUE;
 return;
