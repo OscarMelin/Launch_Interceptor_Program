@@ -144,8 +144,8 @@ MU_TEST(test_triangle_all_angles_acute)
     Y[1] = 2;
     X[2] = 2;
     Y[2] = 0;
+    
     PARAMETERS.RADIUS1 = 1;
-
     LIC_1();
     mu_check(CMV[1]==1);
     
@@ -167,6 +167,55 @@ MU_TEST(test1)
     mu_check(CMV[1]==0);
 }
 
+MU_TEST(two_points_same)
+{
+    X[0] = 1;
+    X[1] = 1;
+    Y[0] = 1;
+    Y[1] = 1;
+    X[2] = 5;
+    Y[2] = 1;
+    PARAMETERS.RADIUS1 = 3;
+    LIC_1();
+    mu_check(CMV[1]==0);
+
+    PARAMETERS.RADIUS1 = 2.9;
+    LIC_1();
+    mu_check(CMV[1]==1);
+}
+
+MU_TEST(horizontal_line)
+{
+    X[0] = -2;
+    Y[0] = 0;
+    X[1] = 0;
+    Y[1] = 0;
+    X[2] = 6;
+    Y[2] = 0;
+    PARAMETERS.RADIUS1 = 4;
+    LIC_1();
+    mu_check(CMV[1]==0);
+    PARAMETERS.RADIUS1 = 3.9;
+    LIC_1();
+    mu_check(CMV[1]==1);
+}
+
+MU_TEST(vertical_line)
+{
+    X[0] = -2;
+    Y[0] = -2;
+    X[1] = -2;
+    Y[1] = 0;
+    X[2] = -2;
+    Y[2] = 6;
+    PARAMETERS.RADIUS1 = 4;
+    LIC_1();
+    mu_check(CMV[1]==0);
+    PARAMETERS.RADIUS1 = 3.9;
+    LIC_1();
+    mu_check(CMV[1]==1);
+}
+
 MU_TEST_SUITE(test_suite_LIC_1)
 {
     MU_SUITE_CONFIGURE(&test_setup,&test_teardown);
@@ -177,6 +226,60 @@ MU_TEST_SUITE(test_suite_LIC_1)
     MU_RUN_TEST(test_third_angle_obtuse);
     MU_RUN_TEST(test_triangle_all_angles_acute);
     MU_RUN_TEST(test1);
+    MU_RUN_TEST(two_points_same);
+    MU_RUN_TEST(horizontal_line);
+    MU_RUN_TEST(vertical_line);
+}
+
+void setup_LIC8()
+{
+    NUMPOINTS = 14;
+    PARAMETERS.A_PTS = 2;
+    PARAMETERS.B_PTS = 3;
+    X = malloc(NUMPOINTS*sizeof(double));
+    Y = malloc(NUMPOINTS*sizeof(double));
+    CMV = malloc(15*sizeof(boolean));
+}
+
+void teardown_LIC8()
+{
+    free(X);
+    free(Y);
+    free(CMV);
+}
+
+MU_TEST(test_NUMPOINTS_LT_5)
+{
+    NUMPOINTS = 4;
+    PARAMETERS.A_PTS = 1;
+    PARAMETERS.B_PTS = 1;
+    X = malloc(NUMPOINTS*sizeof(double));
+    Y = malloc(NUMPOINTS*sizeof(double));
+    CMV = malloc(15*sizeof(boolean));
+    X[0] = 1;
+    Y[0] = 2;
+    X[1] = 3;
+    Y[1] = 4;
+    X[2] = 5;
+    Y[2] = 6;
+    X[3] = 7;
+    X[3] = 8;
+    PARAMETERS.RADIUS1 = 3;
+    LIC_8();
+    mu_check(CMV[8]==0);
+    free(X);
+    free(Y);
+    free(CMV);
+}
+
+MU_TEST(test_LIC8)
+{
+}
+
+MU_TEST_SUITE(test_suite_LIC_8)
+{
+    MU_SUITE_CONFIGURE(&setup_LIC8,&teardown_LIC8);
+    MU_RUN_TEST(test_LIC8);
 }
 
 int main()
@@ -185,6 +288,8 @@ int main()
     MU_RUN_TEST(test_angle);
     MU_RUN_TEST(test_slope);
     MU_RUN_SUITE(test_suite_LIC_1);
+    MU_RUN_TEST(test_NUMPOINTS_LT_5);
+    MU_RUN_SUITE(test_suite_LIC_8);
     MU_REPORT();
     return 0;
 }

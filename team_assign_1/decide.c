@@ -62,6 +62,67 @@ else
 return 4;
 } 
 
+// Given three points, decides if they can be contained in a circle of radius.
+// Returns true if they cannot be, false if they can.
+boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
+        double y2, double x3, double y3, double radius)
+{
+    double l12 = get_distance(x1,x2,y1,y2);
+    double l13 = get_distance(x1,x3,y1,y3);
+    double l23 = get_distance(x2,x3,y2,y3);
+
+    //To include a case where all the three points are the same.
+    if((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(x2,x3)==EQ)&&
+            (DOUBLECOMPARE(y1,y2)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ))
+    {
+        return FALSE; 
+    }
+
+    // Find the angle where these two lines intersect, if greater than 90
+    // then the line made by p1 and p3 is the diameter of the circle
+    double theta1 = get_angle(l12,l13,l23);
+    if (DOUBLECOMPARE(theta1,PI/2)==GT) {
+        // If this is greater than RADIUS1 then set the CMV and return
+        if (DOUBLECOMPARE(l23/2,radius)==GT) {
+            return TRUE;
+        }
+        else
+            return FALSE;
+    }
+    // If the angle is <= 90, then check one more angle
+    double theta2 = get_angle(l12,l23,l13);
+    if (DOUBLECOMPARE(theta2,PI/2)==GT) {
+        // If this is greater than RADIUS1 then set the CMV and return
+        if (DOUBLECOMPARE(l13/2,radius)==GT) {
+            return TRUE;
+        }
+        else
+            return FALSE;
+    }
+    // Check the last angle
+    if (DOUBLECOMPARE(theta1+theta2,PI/2)==LT) {
+        if (DOUBLECOMPARE(l12/2,radius)==GT) {
+            return TRUE;
+        }
+        else
+            return FALSE;
+    }
+    // Now calculate the center of the circle
+    double m_a = get_slope(x1,x2,y1,y2);
+    double m_b = get_slope(x2,x3,y2,y3);
+    double center_x = (m_a*m_b*(y1-y3)+m_b*(x1+x2)-m_a*(x2+x3))
+        /(2*(m_b-m_a));
+    double center_y = -1/m_a*(center_x-(x1+x2)/2)+(y1+y2)/2;
+    // All three points lie on the circle, so calculate the distance from
+    // here out
+    double radius1 = get_distance(center_x,x1,center_y,y1);
+    if (DOUBLECOMPARE(radius1,radius)==GT) {
+        return TRUE;
+    }
+    else
+        return FALSE;
+}
+
 //LIC_0() is checks the distance between consec. data points.
 //If the distance between any two datapoints is grater than
 //LENGTH1, writes 1 into CMV[0].
@@ -120,65 +181,11 @@ void LIC_1() {
         double y1 = Y[i];
         double y2 = Y[i+1];
         double y3 = Y[i+2];
-        double l12 = get_distance(x1,x2,y1,y2);
-        double l13 = get_distance(x1,x3,y1,y3);
-        double l23 = get_distance(x2,x3,y2,y3);
-        
-        //To include a case where all the three points are the same.
-        if((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(x2,x3)==EQ)&&
-                (DOUBLECOMPARE(y1,y2)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ))
-        {
-        	CMV[1]=FALSE;
-        	break;
-        }
 
-        // Find the angle where these two lines intersect, if greater than 90
-        // then the line made by p1 and p3 is the diameter of the circle
-        double theta1 = get_angle(l12,l13,l23);
-        if (DOUBLECOMPARE(theta1,PI/2)==GT) {
-            // If this is greater than RADIUS1 then set the CMV and return
-            if (DOUBLECOMPARE(l23/2,PARAMETERS.RADIUS1)==GT) {
-                CMV[1] = TRUE;
-                return;
-            }
-            else
-                continue;
-        }
-        // If the angle is <= 90, then check one more angle
-        double theta2 = get_angle(l12,l23,l13);
-        if (DOUBLECOMPARE(theta2,PI/2)==GT) {
-            // If this is greater than RADIUS1 then set the CMV and return
-            if (DOUBLECOMPARE(l13/2,PARAMETERS.RADIUS1)==GT) {
-                CMV[1] = TRUE;
-                return;
-            }
-            else
-                continue;
-        }
-        // Check the last angle
-        if (DOUBLECOMPARE(theta1+theta2,PI/2)==LT) {
-            if (DOUBLECOMPARE(l12/2,PARAMETERS.RADIUS1)==GT) {
-                CMV[1] = TRUE;
-                return;
-            }
-            else
-                continue;
-        }
-        // Now calculate the center of the circle
-        double m_a = get_slope(x1,x2,y1,y2);
-        double m_b = get_slope(x2,x3,y2,y3);
-        double center_x = (m_a*m_b*(y1-y3)+m_b*(x1+x2)-m_a*(x2+x3))
-            /(2*(m_b-m_a));
-        double center_y = -1/m_a*(center_x-(x1+x2)/2)+(y1+y2)/2;
-        // All three points lie on the circle, so calculate the distance from
-        // here out
-        double radius = get_distance(center_x,x1,center_y,y1);
-        if (DOUBLECOMPARE(radius,PARAMETERS.RADIUS1)==GT) {
-            CMV[1] = TRUE;
+        CMV[1] = cannot_be_contained_in_circle(x1,y1,x2,y2,x3,y3,
+                PARAMETERS.RADIUS1);
+        if (CMV[1] == TRUE)
             return;
-        }
-        else
-            continue;
     }
     
 } // End function LIC_1()
@@ -381,6 +388,34 @@ return;
 }
 }//end of LIC_7()
 
+// Checks to see if three points can be contained inside a circle of radius
+// RADIUS1. The points that are checked are separated by A_PTS and B_PTS.
+void LIC_8()
+{
+    // If NUMPOINTS is less than 5, then false
+    if (NUMPOINTS<5) {
+        CMV[8] = FALSE;
+        return;
+    }
+
+    int max_point = NUMPOINTS-PARAMETERS.A_PTS-PARAMETERS.B_PTS-2;
+    for (int i=0;i<max_point;++i) {
+
+        int index1 = i+PARAMETERS.A_PTS+1;
+        int index2 = index1+PARAMETERS.B_PTS+1;
+        double x1 = X[i];
+        double x2 = X[index1];
+        double x3 = X[index2];
+        double y1 = Y[i];
+        double y2 = Y[index1];
+        double y3 = Y[index2];
+        CMV[8] = cannot_be_contained_in_circle(x1,y1,x2,y2,x3,y3,
+                PARAMETERS.RADIUS1);
+        if (CMV[8] == TRUE)
+            return;
+    }
+    return;
+}
 
 //*****************LIC10()*********************
 void LIC_10()
@@ -454,6 +489,45 @@ for(i=0;(i+PARAMETERS.K_PTS+1< NUMPOINTS);i++)
 }
 }//End of LIC_12
 
+// Does the same thing as LIC_8 except it also checks to see if the points can
+// be contained in a circle of RADIUS2.
+void LIC_13()
+{
+    CMV[13] = FALSE;
+    // LIC_8 will have already run. Check to see if the result from that
+    // function is TRUE
+    if (CMV[8]==TRUE) {
+        // Check to see if there is a set that cannot be contained in a circle
+        // of RADIUS2
+        int max_point = NUMPOINTS-PARAMETERS.A_PTS-PARAMETERS.B_PTS-2;
+        for (int i=0;i<max_point;++i) {
+
+            int index1 = i+PARAMETERS.A_PTS+1;
+            int index2 = index1+PARAMETERS.B_PTS+1;
+            double x1 = X[i];
+            double x2 = X[index1];
+            double x3 = X[index2];
+            double y1 = Y[i];
+            double y2 = Y[index1];
+            double y3 = Y[index2];
+            boolean result = cannot_be_contained_in_circle(x1,y1,x2,y2,x3,y3,
+                    PARAMETERS.RADIUS2);
+            // Swap the result because we want to know if the points can be
+            // contained
+            if (result==TRUE)
+                result=FALSE;
+            else
+                result=TRUE;
+
+            if (result==TRUE) {
+                CMV[13]=result;
+                return;
+            }
+        }
+    }
+    return;
+}
+
 //********************LIC_14()****************************************
 void LIC_14()
 {
@@ -501,14 +575,18 @@ if(DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
 }//closes i forloop
 }//End of LIC_14
 
-
-
-
 void DECIDE(void) {
 
     // Call launch interceptor condition functions
     LIC_0();
     LIC_1();
+    LIC_2();
+    LIC_3();
+    LIC_4();
+    LIC_5();
+    LIC_6();
+    LIC_7();
+    LIC_8();
 
     // Loop through and populate the PUM
     int row, col;
