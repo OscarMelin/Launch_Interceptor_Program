@@ -95,22 +95,24 @@ void generate_ECDF(struct timespec* dataSet, unsigned int dataSet_size, unsigned
     }
     fclose(plotData);
     
-    FILE *pipe = popen("gnuplot ", "w");
-    fprintf(pipe, "plot sin(x)");
-  // fprintf(pipe, "set title 'Empirical Cumulative Distribution Function Plot' font 'sans,18';");
+   //FILE *pipe = popen("gnuplot ", "w");
+   //fprintf(pipe, "plot sin(x)");
+   // fprintf(pipe, "set title 'Empirical Cumulative Distribution Function Plot' font 'sans,18';");
    // fprintf(pipe, "set xlabel 'Time (nS)' font 'sans,14';");
    // fprintf(pipe, "set ylabel 'ECFD \%%' font 'sans,14';");
    // fprintf(pipe, "set grid; unset key;");
    // fprintf(pipe, "plot 'plotData' with lines;");
-    pclose(pipe);
+   //pclose(pipe);
     
     
 }
 
 void populateGlobals() {
 
+    NUMPOINTS = 100;
+
     PARAMETERS.LENGTH1 = 11;   // Length in LICs 0, 7, 12
-    PARAMETERS.RADIUS1 = 5;   // Radius in LICs 1, 8, 13
+    PARAMETERS.RADIUS1 = 1;   // Radius in LICs 1, 8, 13
     PARAMETERS.EPSILON = 2;   // Deviation from PI in LICs 2, 9
     PARAMETERS.AREA1 = 23 ;     // Area in LICs 3, 10, 14
     PARAMETERS.Q_PTS = 7;        // No. of consecutive points in LIC 4
@@ -129,8 +131,8 @@ void populateGlobals() {
     PARAMETERS.RADIUS2 = 23;   // Maximum radius in LIC 13
     PARAMETERS.AREA2 = 41;     // Maximum area in LIC 14
 
-      double X_init[100] = {1,3,5,7,-2,-2,-2,-2,0,6,1,1,5,0,4.11,16.13,0,1,2,1,1,-1,1,-1,1,-1,1,1,0,0,3,3,-1,};
-      double Y_init[100] = {2,4,6,8,-2,0,6,0,0,0,1,1,1,0,-7.37,-9.35,0,2,0,-4,2,-1,-4,-1,2,-1,-4,2,1,15,3,-1,-1,}; 
+      double X_init[100] = {1,3,5,7,-2,-2,-2,-2,0,6,1,1,5,0,4.11,16.13,0,1,2,1,1,-1,1,-1,1,-1,1,1,0,0,3,3,-1};
+      double Y_init[100] = {2,4,6,8,-2,0,6,0,0,0,1,1,1,0,-7.37,-9.35,0,2,0,-4,2,-1,-4,-1,2,-1,-4,2,1,15,3,-1,-1}; 
 
     CONNECTORS LCM_init[15][15] = {
         {ORR,ANDD,NOTUSED,ORR,NOTUSED,ANDD,NOTUSED,ORR,ANDD,ANDD,ORR,NOTUSED,ANDD,ORR,NOTUSED},
