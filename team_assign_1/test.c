@@ -175,11 +175,11 @@ MU_TEST(two_points_same)
     Y[1] = 1;
     X[2] = 5;
     Y[2] = 1;
-    PARAMETERS.RADIUS1 = 3;
+    PARAMETERS.RADIUS1 = 2;
     LIC_1();
     mu_check(CMV[1]==0);
 
-    PARAMETERS.RADIUS1 = 2.9;
+    PARAMETERS.RADIUS1 = 1.9;
     LIC_1();
     mu_check(CMV[1]==1);
 }
