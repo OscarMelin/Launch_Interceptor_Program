@@ -587,6 +587,13 @@ void DECIDE(void) {
     LIC_6();
     LIC_7();
     LIC_8();
+    
+    LIC_10();
+    LIC_11();
+    LIC_12();
+    LIC_13();
+    LIC_14();
+
 
     // Loop through and populate the PUM
     int row, col;

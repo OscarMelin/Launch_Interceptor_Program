@@ -1,6 +1,19 @@
-set title "Empirical Cumulative Distribution Function Plot" font "sans,18";
+set multiplot layout 2,1;
+set title "Empirical Cumulative Distribution Function" font "sans,18";
 set xlabel "Time (nS)" font "sans,14";
 set ylabel "ECFD %" font "sans,14";
 set grid;
 unset key;
 plot "plotData" with lines
+
+set title "Raw Timing Data" font "sans,18";
+set xlabel "Test Iteration" font "sans,14";
+set ylabel "Time (nS)" font "sans,14";
+set grid;
+unset key;
+plot "rawData" with lines
+unset multiplot
+
+
+
+

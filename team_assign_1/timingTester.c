@@ -27,15 +27,18 @@ int main()
 	struct timespec start, stop;
     int i;
 
+    FILE *rawData= fopen("rawData", "w+");
+    printf("Begin running timing test.\n");
     for(i=0; i < NUM_TESTS; i++) {
-*       clock_gettime(CLOCK_MONOTONIC, &start);
+        clock_gettime(CLOCK_MONOTONIC, &start);
         DECIDE();
         clock_gettime(CLOCK_MONOTONIC, &stop);
         timingData[i] = diff(start,stop);
-
+        fprintf(rawData,"%d %ld\n",i,timingData[i].tv_nsec);
 //        timingData[i].tv_nsec = (timingData[i-1].tv_nsec*59+439)%7919;  // Random data for testing
     }    
-
+    fclose(rawData);
+    printf("Done running timing test.\n");
     generate_ECDF(timingData, NUM_TESTS, PLOT_POINTS);   
     free(timingData);
     
@@ -64,12 +67,12 @@ void generate_ECDF(struct timespec* dataSet, unsigned int dataSet_size, unsigned
     float y_coord;
     
     // Find maximum value in dataSet (only dealing with nanoseconds)
-    long max = dataSet[0].tv_nsec; 
+    long max = dataSet[0].tv_nsec;
     for(i=1; i < dataSet_size; i++) {
        if(dataSet[i].tv_nsec > max) 
             max = dataSet[i].tv_nsec;
     }
-    
+    printf("max value: %ld",max); 
     FILE *plotData = fopen("plotData", "w+");
     
     // generate ECDF
@@ -85,6 +88,7 @@ void generate_ECDF(struct timespec* dataSet, unsigned int dataSet_size, unsigned
         y_coord = ((float)sum/numPoints);
         
         fprintf(plotData,"%ld %f\n",x_coord,y_coord);
+        //printf("%ld %f\n",x_coord,y_coord);
     }
     fclose(plotData);
     /*
@@ -101,15 +105,31 @@ void generate_ECDF(struct timespec* dataSet, unsigned int dataSet_size, unsigned
 
 void populateGlobals() {
 
-    // Data to initialize global variables with
-    double x_init[100] =  {0};
-    
-    double y_init[100] =  {10};
-    
-    memcpy(X, x_init, 100);
-    memcpy(Y, y_init, 100);
-    
+    int i;
+    for(i=0; i < 100; i++) {
+        X[i] = ((i)*59+439)%7919;  // Random data for testing
+        Y[i] = ((i)*79+691)%8017;  // Random data for testing
+    }    
 
+    PARAMETERS.LENGTH1 = 11;   // Length in LICs 0, 7, 12
+    PARAMETERS.RADIUS1 = 5;   // Radius in LICs 1, 8, 13
+    PARAMETERS.EPSILON = 2;   // Deviation from PI in LICs 2, 9
+    PARAMETERS.AREA1 = 23 ;     // Area in LICs 3, 10, 14
+    PARAMETERS.Q_PTS = 7;        // No. of consecutive points in LIC 4
+    PARAMETERS.QUADS = 3;        // No. of quadrants in LIC 4
+    PARAMETERS.DIST = 17;      // Distance in LIC 6 
+    PARAMETERS.N_PTS = 5;        // No. of consecutive pts. in LIC 6
+    PARAMETERS.K_PTS = 3;        // No. of int. pts. in LICs 7, 12
+    PARAMETERS.A_PTS = 13;        // No. of int. pts. in LICs 8, 13
+    PARAMETERS.B_PTS = 2;        // No. of int. pts. in LICs 8, 13
+    PARAMETERS.C_PTS = 7;        // No. of int. pts. in LIC 9
+    PARAMETERS.D_PTS = 5;        // No. of int. pts. in LIC 9
+    PARAMETERS.E_PTS = 3;        // No. of int. pts. in LICs 10, 14
+    PARAMETERS.F_PTS = 17;        // No. of int. pts. in LICs 10, 14
+    PARAMETERS.G_PTS = 13;        // No. of int. pts. in LIC 11
+    PARAMETERS.LENGTH2 = 31;   // Maximum length in LIC 12
+    PARAMETERS.RADIUS2 = 23;   // Maximum radius in LIC 13
+    PARAMETERS.AREA2 = 41;     // Maximum area in LIC 14
 }
 
 void fail(char* msg) {
