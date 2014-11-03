@@ -36,7 +36,7 @@ inline double get_slope(double x1, double x2, double y1, double y2)
     return (y1-y2)/(x1-x2);
 }
 // Takes slope and y intercept of the line (y = mx + c) and returns distance of point from the line.
-inline double pt_line_distance(double m,double c,double x1, double y1)
+double pt_line_distance(double m,double c,double x1, double y1)
 {
 double z;
 z = (m*x1 - y1 + c)/sqrt((pow(m,2)+1));
@@ -212,9 +212,9 @@ void LIC_2()
 	if(DOUBLECOMPARE(angle,0.0)==EQ)
 	angle = PI;
         //To include a case where any two points are the same. Check if x1==x2 && y1==y2 ||x1==x3 && y1==y3 || x2==x3 && y2==y3
-        if((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(y1,y2)==EQ)||
-                (DOUBLECOMPARE(x1,x3)==EQ)&&(DOUBLECOMPARE(y1,y3)==EQ)||
-			(DOUBLECOMPARE(x2,x3)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ))
+        if(((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(y1,y2)==EQ))||
+                ((DOUBLECOMPARE(x1,x3)==EQ)&&(DOUBLECOMPARE(y1,y3)==EQ))||
+                ((DOUBLECOMPARE(x2,x3)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ)))
             break;
 	if((DOUBLECOMPARE(angle,PI)==EQ))
 	    break;	
@@ -445,7 +445,7 @@ return;
 }
 }//End of LIC_10
 //*************LIC_11()****************************
-LIC_11()
+void LIC_11()
 {
 CMV[11] = FALSE;
 if(NUMPOINTS < 3)
