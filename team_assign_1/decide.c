@@ -123,46 +123,27 @@ boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
         return FALSE;
 }
 
-//LIC_0() is checks the distance between consec. data points.
-//If the distance between any two datapoints is grater than
-//LENGTH1, writes 1 into CMV[0].
-
+//******************************LIC_0()***********************************
 void LIC_0() 
 {
+CMV[0]=FALSE;
     int i = 0;
-    int flag = 0;
     double distance;
-
-    //loop through i data points.
-
-    while (i<NUMPOINTS-1 && flag ==0)
+    for (i=0;i<NUMPOINTS-1;i++)
     {
         // Get the coordinates for the two consecutive points
-
         double x1 = X[i];
         double x2 = X[i + 1];
         double y1 = Y[i];
         double y2 = Y[i + 1];
-
-        distance = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
-        // Calculate the distance between each set of consecutive data points.
-        //if distance exceeds LENGTH1 CMV[0] is set to true or 1 and looping is
-        //terminated.
-
+	distance = get_distance(x1,x2,y1,y2);
         if (DOUBLECOMPARE(distance, PARAMETERS.LENGTH1) == GT)
         {
-            flag = 1;
             CMV[0] = TRUE;
-            break;
-        }
-        else
-        {
-            CMV[0] = FALSE;
-        }
-        i++;
-    }
+            return;
+        }       
+    }//closes for loop
 } // End function LIC_0()
-
 /*
  * The LIC_1 function checks three consecutive data points (p1, p2, p3) to see
  * if all three can be contained in a circle of radius RADIUS1
