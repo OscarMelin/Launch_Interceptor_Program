@@ -190,7 +190,8 @@ void LIC_1() {
     
 } // End function LIC_1()
 
-//Checks the angle condition mentioned in specification 2.
+//**************************LIC_2()********************************************
+
 void LIC_2() 
 {
     CMV[2] = FALSE;
@@ -208,26 +209,21 @@ void LIC_2()
         double l12 = get_distance(x1,x2,y1,y2);
         double l13 = get_distance(x1,x3,y1,y3);
         double l23 = get_distance(x2,x3,y2,y3);
-        double angle = get_angle(l12,l13,l23);
-	if(DOUBLECOMPARE(angle,0.0)==EQ)
-	angle = PI;
-        //To include a case where any two points are the same. Check if x1==x2 && y1==y2 ||x1==x3 && y1==y3 || x2==x3 && y2==y3
+        double angle = get_angle(l12,l23,l13); // vertex of angle is Pt. 2 (angle opp to line 13)
+//To include a case where any two points are the same. Check if x1==x2 && y1==y2 ||x1==x3 && y1==y3 || x2==x3 && y2==y3
         if(((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(y1,y2)==EQ))||
                 ((DOUBLECOMPARE(x1,x3)==EQ)&&(DOUBLECOMPARE(y1,y3)==EQ))||
                 ((DOUBLECOMPARE(x2,x3)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ)))
-            break;
-	if((DOUBLECOMPARE(angle,PI)==EQ))
-	    break;	
+        continue;// eliminates setting CMV true even whenever any two points are coincident and angle = nan
 
 	// checks for angle < (PI − EPSILON)or angle > (PI + EPSILON)
-        else if((DOUBLECOMPARE(angle,(PI+PARAMETERS.EPSILON))==GT)||
+        if((DOUBLECOMPARE(angle,(PI+PARAMETERS.EPSILON))==GT)||
                 (DOUBLECOMPARE(angle,(PI-PARAMETERS.EPSILON))==LT))
-        {
-            CMV[2]=TRUE;
+        {     
+	CMV[2]=TRUE; 
         }
     }//closes for
 }//end of LIC_2()
-
 
 //Funtion that checks if area formed by three consecutive data points is greater
 //than AREA1 
@@ -416,6 +412,44 @@ void LIC_8()
     }
     return;
 }
+//********************LIC_9()**********************************
+void LIC_9() 
+{
+CMV[9]=FALSE;
+if(NUMPOINTS < 5)
+return;
+int i;
+for(i=0;(i+PARAMETERS.C_PTS+PARAMETERS.D_PTS+1+1< NUMPOINTS);i++)
+{
+double x1 = X[i];
+double x2 = X[i+PARAMETERS.C_PTS+1];
+double x3 = X[i+PARAMETERS.C_PTS+1+PARAMETERS.D_PTS+1];
+double y1 = Y[i];
+double y2 = Y[i+PARAMETERS.C_PTS+1];
+double y3 = Y[i+PARAMETERS.C_PTS+1+PARAMETERS.D_PTS+1];
+double l12 = get_distance(x1,x2,y1,y2);
+double l13 = get_distance(x1,x3,y1,y3);
+double l23 = get_distance(x2,x3,y2,y3);	
+double angle = get_angle(l12,l23,l13);//vertex of angle is Pt. 2 (angle opp to line 13)
+//To include a case where any two points are the same. Check if x1==x2 && y1==y2 ||x1==x3 && y1==y3 || x2==x3 && y2==y3
+        if(((DOUBLECOMPARE(x1,x2)==EQ)&&(DOUBLECOMPARE(y1,y2)==EQ))||
+                ((DOUBLECOMPARE(x1,x3)==EQ)&&(DOUBLECOMPARE(y1,y3)==EQ))||
+                ((DOUBLECOMPARE(x2,x3)==EQ)&&(DOUBLECOMPARE(y2,y3)==EQ)))
+        continue;// eliminates setting CMV true even whenever any two points are coincident and angle = nan
+	
+	// checks for angle < (PI − EPSILON)or angle > (PI + EPSILON)
+        if((DOUBLECOMPARE(angle,(PI+PARAMETERS.EPSILON))==GT)||
+                (DOUBLECOMPARE(angle,(PI-PARAMETERS.EPSILON))==LT))
+        {     
+	CMV[9]=TRUE; 
+        }
+    }//closes for
+}//end of LIC_9()
+
+
+
+
+
 
 //*****************LIC10()*********************
 void LIC_10()
