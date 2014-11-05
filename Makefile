@@ -7,5 +7,4 @@ subdirs: $(SUBDIRS)
 
 $(SUBDIRS):
 	$(MAKE) -C $@
-	cp team_assign_1/decide.o ./
 

@@ -11,6 +11,7 @@ HTML_DIR = html_gen
 all: CFLAGS += -O2 -c
 all: $(SOURCE)
 	$(CC) $(CFLAGS) $(SOURCE)
+	cp $(TARGET) ../
 
 test: CFLAGS += --coverage -D__need_clockid_t 
 test: LDFLAGS += -lm 
@@ -21,9 +22,11 @@ test: $(SOURCE)
 	$(CODE_COVERAGE_TOOL) -z -d .
 	./$(TARGET)
 	$(CODE_COVERAGE_TOOL) -c -d . -o $(COVERAGE_OUT)
+	rm -rf $(HTML_DIR)
 	mkdir $(HTML_DIR)
 	genhtml $(COVERAGE_OUT) -o $(HTML_DIR)
 
 clean:
-	rm -rf *.o *.gcno *.gcda run_test $(COVERAGE_OUT) $(HTML_DIR)
+	rm -rf *.o *.gcno *.gcda run_test *.orig tags $(COVERAGE_OUT) \
+	    $(HTML_DIR)
 
