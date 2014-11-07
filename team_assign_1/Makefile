@@ -1,12 +1,14 @@
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -std=c11 -ffloat-store
+CFLAGS = -Wall -Wextra -Werror -std=c99 -ffloat-store
 LDFLAGS =
 SOURCE = decide.c
 TARGET = decide.o
 COVERAGE_OUT = coverage.info
 CODE_COVERAGE_TOOL = lcov
 HTML_DIR = html_gen
+
+.PHONY: all test clean
 
 all: CFLAGS += -O2 -c
 all: $(SOURCE)

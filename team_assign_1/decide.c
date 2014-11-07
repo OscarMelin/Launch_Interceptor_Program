@@ -11,9 +11,9 @@
  *    based upon input radar tracking information.
  */
 
-#include "test.h"
+//#include "test.h"
 #include "decide.h"
-#include <stdio.h>
+//#include <stdio.h>
 #define TRUE 1
 #define FALSE 0
 
@@ -602,7 +602,7 @@ void DECIDE(void) {
     LIC_6();
     LIC_7();
     LIC_8();
-    
+    LIC_9();    
     LIC_10();
     LIC_11();
     LIC_12();
