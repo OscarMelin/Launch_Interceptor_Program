@@ -268,8 +268,7 @@ void LIC_4()
         {
             //more than 1 Quad
             case 1:
-                if(!((q1==PARAMETERS.Q_PTS)||(q2==PARAMETERS.Q_PTS)||
-                            (q3==PARAMETERS.Q_PTS)||(q4==PARAMETERS.Q_PTS)))
+                if(q1*q2>0||q1*q3>0||q1*q4>0||q2*q3>0||q2*q4>0||q3*q4>0) //atleast two out q1,q2,q3 and q4 need to be non-zero
                 {
                     CMV[4]=TRUE;
                     break;
