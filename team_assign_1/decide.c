@@ -100,7 +100,8 @@ boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
             return FALSE;
     }
     // Check the last angle
-    if (DOUBLECOMPARE(theta1+theta2,PI/2)==LT) {
+    if (DOUBLECOMPARE(theta1+theta2,PI/2)==LT||
+            DOUBLECOMPARE(theta1+theta2,PI/2)==EQ) {
         if (DOUBLECOMPARE(l12/2,radius)==GT) {
             return TRUE;
         }
@@ -112,7 +113,14 @@ boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
     double m_b = get_slope(x2,x3,y2,y3);
     double center_x = (m_a*m_b*(y1-y3)+m_b*(x1+x2)-m_a*(x2+x3))
         /(2*(m_b-m_a));
-    double center_y = -1/m_a*(center_x-(x1+x2)/2)+(y1+y2)/2;
+    double inv_m_a;
+    if (DOUBLECOMPARE(m_a,0)==EQ) {
+        const int something_big = 65500;
+        inv_m_a = something_big;
+    }
+    else
+        inv_m_a = 1/m_a;
+    double center_y = -inv_m_a*(center_x-(x1+x2)/2)+(y1+y2)/2;
     // All three points lie on the circle, so calculate the distance from
     // here out
     double radius1 = get_distance(center_x,x1,center_y,y1);
