@@ -11,55 +11,59 @@
  *    based upon input radar tracking information.
  */
 
-//#include "test.h"
+#include "test.h"
 #include "decide.h"
 //#include <stdio.h>
 #define TRUE 1
 #define FALSE 0
+const int really_big = 2e9;
 
 // Takes x and y coordinates for two Cartesian points and returns the distance
 // between the two points
-inline double get_distance(double x1, double x2, double y1, double y2)
+double get_distance(double x1, double x2, double y1, double y2)
 {
     return sqrt(pow(x1-x2,2)+pow(y1-y2,2));
 }
 
 // Takes the distance between three points and returns the angle <213
-inline double get_angle(double l12, double l13, double l23)
+double get_angle(double l12, double l13, double l23)
 {
-return acos((pow(l12,2)+pow(l13,2)-pow(l23,2))/(2*l12*l13));
+    return acos((pow(l12,2)+pow(l13,2)-pow(l23,2))/(2*l12*l13));
 }
 
 // Takes the x and y coordinates of two Cartesian points and returns the slope
-inline double get_slope(double x1, double x2, double y1, double y2)
+double get_slope(double x1, double x2, double y1, double y2)
 {
+    if (DOUBLECOMPARE(x1,x2)==EQ)
+        return really_big;
     return (y1-y2)/(x1-x2);
 }
+
 // Takes slope and y intercept of the line (y = mx + c) and returns distance of point from the line.
 double pt_line_distance(double m,double c,double x1, double y1)
 {
-double z;
-z = (m*x1 - y1 + c)/sqrt((pow(m,2)+1));
-if (DOUBLECOMPARE(z,0)==GT||DOUBLECOMPARE(z,0)==EQ) 
-return z;
-else
-return -1*z;
+    double z;
+    z = (m*x1 - y1 + c)/sqrt((pow(m,2)+1));
+    if (DOUBLECOMPARE(z,0)==GT||DOUBLECOMPARE(z,0)==EQ) 
+        return z;
+    else
+        return -1*z;
 }
 
 double get_quadrant(double x1, double y1)//Returns quadrant based on priority
-                                         //ordering when a point is in conflict
+    //ordering when a point is in conflict
 {
-//if (x1>=0&&y1>=0)
-if(((DOUBLECOMPARE(x1,0)==GT)||(DOUBLECOMPARE(x1,0)==EQ))&&((DOUBLECOMPARE(y1,0)==GT)||(DOUBLECOMPARE(y1,0)==EQ)))
-return 1;
-//if (x1<0&&y1>=0)
-if((DOUBLECOMPARE(x1,0)==LT)&&((DOUBLECOMPARE(y1,0)==GT)||(DOUBLECOMPARE(y1,0)==EQ)))
-return 2;
-//if(x1<=0&&y1<0)
-if(((DOUBLECOMPARE(x1,0)==LT)||(DOUBLECOMPARE(x1,0)==EQ))&&(DOUBLECOMPARE(y1,0)==LT))
-return 3;
-else
-return 4;
+    //if (x1>=0&&y1>=0)
+    if(((DOUBLECOMPARE(x1,0)==GT)||(DOUBLECOMPARE(x1,0)==EQ))&&((DOUBLECOMPARE(y1,0)==GT)||(DOUBLECOMPARE(y1,0)==EQ)))
+        return 1;
+    //if (x1<0&&y1>=0)
+    if((DOUBLECOMPARE(x1,0)==LT)&&((DOUBLECOMPARE(y1,0)==GT)||(DOUBLECOMPARE(y1,0)==EQ)))
+        return 2;
+    //if(x1<=0&&y1<0)
+    if(((DOUBLECOMPARE(x1,0)==LT)||(DOUBLECOMPARE(x1,0)==EQ))&&(DOUBLECOMPARE(y1,0)==LT))
+        return 3;
+    else
+        return 4;
 } 
 
 // Given three points, decides if they can be contained in a circle of radius.
@@ -81,7 +85,7 @@ boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
     // Find the angle where these two lines intersect, if greater than 90
     // then the line made by p1 and p3 is the diameter of the circle
     double theta1 = get_angle(l12,l13,l23);
-    if (DOUBLECOMPARE(theta1,PI/2)==GT) {
+    if (DOUBLECOMPARE(theta1,PI/2)==GT||DOUBLECOMPARE(theta1,PI/2)==EQ) {
         // If this is greater than RADIUS1 then set the CMV and return
         if (DOUBLECOMPARE(l23/2,radius)==GT) {
             return TRUE;
@@ -91,7 +95,7 @@ boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
     }
     // If the angle is <= 90, then check one more angle
     double theta2 = get_angle(l12,l23,l13);
-    if (DOUBLECOMPARE(theta2,PI/2)==GT) {
+    if (DOUBLECOMPARE(theta2,PI/2)==GT||DOUBLECOMPARE(theta2,PI/2)==EQ) {
         // If this is greater than RADIUS1 then set the CMV and return
         if (DOUBLECOMPARE(l13/2,radius)==GT) {
             return TRUE;
@@ -114,10 +118,8 @@ boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
     double center_x = (m_a*m_b*(y1-y3)+m_b*(x1+x2)-m_a*(x2+x3))
         /(2*(m_b-m_a));
     double inv_m_a;
-    if (DOUBLECOMPARE(m_a,0)==EQ) {
-        const int something_big = 65500;
-        inv_m_a = something_big;
-    }
+    if (DOUBLECOMPARE(m_a,0)==EQ)
+        inv_m_a = really_big;
     else
         inv_m_a = 1/m_a;
     double center_y = -inv_m_a*(center_x-(x1+x2)/2)+(y1+y2)/2;
@@ -317,37 +319,37 @@ void LIC_5()
 // *****************LIC_6************************ 
 void LIC_6()
 {
-CMV[6] = FALSE;
-if(NUMPOINTS <3) //return if NUMPOINTS <3
-return;
-int i,j;
-double m,c,d;
-for(i=0;(i+PARAMETERS.N_PTS-1< NUMPOINTS);i++)
-{
-for(j=i+1;j<i+PARAMETERS.N_PTS-1;j++)
-{ 
-if((DOUBLECOMPARE(X[i],X[i+PARAMETERS.N_PTS-1])==EQ) && (DOUBLECOMPARE(Y[i],Y[i+PARAMETERS.N_PTS-1])==EQ))// if two points are coincident
-{
-d = get_distance(X[i],X[j],Y[i],Y[j]);
-if (DOUBLECOMPARE(d,PARAMETERS.DIST)==GT) 
-{
-CMV[6] = TRUE;
-return;
-}
-}//closes if statement which tests whether two points are coincident.
-else
-{
-m = get_slope(X[i],X[i+PARAMETERS.N_PTS-1],Y[i],Y[i+PARAMETERS.N_PTS-1]);
-c = Y[i]-m*X[i];
-d = pt_line_distance(m,c,X[j],Y[j]);
-if (DOUBLECOMPARE(d,PARAMETERS.DIST)==GT) 
-{
-CMV[6] = TRUE;
-return;
-}
-}//closes else
-}//closes inner for loop j
-}//closes outer for loop i
+    CMV[6] = FALSE;
+    if(NUMPOINTS <3) //return if NUMPOINTS <3
+        return;
+    int i,j;
+    double m,c,d;
+    for(i=0;(i+PARAMETERS.N_PTS-1< NUMPOINTS);i++)
+    {
+        for(j=i+1;j<i+PARAMETERS.N_PTS-1;j++)
+        { 
+            if((DOUBLECOMPARE(X[i],X[i+PARAMETERS.N_PTS-1])==EQ) && (DOUBLECOMPARE(Y[i],Y[i+PARAMETERS.N_PTS-1])==EQ))// if two points are coincident
+            {
+                d = get_distance(X[i],X[j],Y[i],Y[j]);
+                if (DOUBLECOMPARE(d,PARAMETERS.DIST)==GT) 
+                {
+                    CMV[6] = TRUE;
+                    return;
+                }
+            }//closes if statement which tests whether two points are coincident.
+            else
+            {
+                m = get_slope(X[i],X[i+PARAMETERS.N_PTS-1],Y[i],Y[i+PARAMETERS.N_PTS-1]);
+                c = Y[i]-m*X[i];
+                d = pt_line_distance(m,c,X[j],Y[j]);
+                if (DOUBLECOMPARE(d,PARAMETERS.DIST)==GT) 
+                {
+                    CMV[6] = TRUE;
+                    return;
+                }
+            }//closes else
+        }//closes inner for loop j
+    }//closes outer for loop i
 }//end of LIC_6()
 
 
