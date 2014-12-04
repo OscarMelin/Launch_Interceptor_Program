@@ -11,7 +11,7 @@
  *    based upon input radar tracking information.
  */
 
-#include "test.h"
+//#include "test.h"
 #include "decide.h"
 //#include <stdio.h>
 #define TRUE 1
@@ -34,9 +34,13 @@ double get_angle(double l12, double l13, double l23)
 // Takes the x and y coordinates of two Cartesian points and returns the slope
 double get_slope(double x1, double x2, double y1, double y2)
 {
-    if (DOUBLECOMPARE(x1,x2)==EQ)
-        return really_big;
-    return (y1-y2)/(x1-x2);
+    if (DOUBLECOMPARE(x1,x2)==EQ) {
+        if (DOUBLECOMPARE(y2-y1,0)==GT)
+            return really_big;
+        else
+            return -really_big;
+    }
+    return (y2-y1)/(x2-x1);
 }
 
 // Takes slope and y intercept of the line (y = mx + c) and returns distance of point from the line.
@@ -115,14 +119,21 @@ boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
     // Now calculate the center of the circle
     double m_a = get_slope(x1,x2,y1,y2);
     double m_b = get_slope(x2,x3,y2,y3);
+    while (DOUBLECOMPARE(m_a,0)==EQ||isnan(m_a)||isnan(m_b)) {
+        double temp_x = x1;
+        double temp_y = y1;
+        x1 = x2;
+        y1 = y2;
+        x2 = x3;
+        y2 = y3;
+        x3 = temp_x;
+        y3 = temp_y;
+        m_a = get_slope(x1,x2,y1,y2);
+        m_b = get_slope(x2,x3,y2,y3);
+    }
     double center_x = (m_a*m_b*(y1-y3)+m_b*(x1+x2)-m_a*(x2+x3))
         /(2*(m_b-m_a));
-    double inv_m_a;
-    if (DOUBLECOMPARE(m_a,0)==EQ)
-        inv_m_a = really_big;
-    else
-        inv_m_a = 1/m_a;
-    double center_y = -inv_m_a*(center_x-(x1+x2)/2)+(y1+y2)/2;
+    double center_y = -1/m_a*(center_x-(x1+x2)/2)+(y1+y2)/2;
     // All three points lie on the circle, so calculate the distance from
     // here out
     double radius1 = get_distance(center_x,x1,center_y,y1);
@@ -328,7 +339,9 @@ void LIC_6()
     {
         for(j=i+1;j<i+PARAMETERS.N_PTS-1;j++)
         { 
-            if((DOUBLECOMPARE(X[i],X[i+PARAMETERS.N_PTS-1])==EQ) && (DOUBLECOMPARE(Y[i],Y[i+PARAMETERS.N_PTS-1])==EQ))// if two points are coincident
+            // if two points are coincident
+            if((DOUBLECOMPARE(X[i],X[i+PARAMETERS.N_PTS-1])==EQ) &&
+                    (DOUBLECOMPARE(Y[i],Y[i+PARAMETERS.N_PTS-1])==EQ))
             {
                 d = get_distance(X[i],X[j],Y[i],Y[j]);
                 if (DOUBLECOMPARE(d,PARAMETERS.DIST)==GT) 
