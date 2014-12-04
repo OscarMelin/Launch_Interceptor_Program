@@ -282,7 +282,7 @@ void LIC_4()
                 }
                 //more than 2 Quad
             case 2:
-                if(q1*q2*q3!=0||q2*q3*q4!=0||q3*q4*q1!=0) //Only one out of q1-q4 can be zero. Three need to be non-zero
+                if(q1*q2*q3!=0||q2*q3*q4!=0||q3*q4*q1!=0||q1*q2*q4!=0) //atleast three out q1,q2,q3 and q4 need to be non-zero
                 {
                     CMV[4]=TRUE;
                     break;
