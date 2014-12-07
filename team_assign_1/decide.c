@@ -11,7 +11,7 @@
  *    based upon input radar tracking information.
  */
 
-//#include "test.h"
+#include "test.h"
 #include "decide.h"
 //#include <stdio.h>
 #define TRUE 1
@@ -28,7 +28,12 @@ double get_distance(double x1, double x2, double y1, double y2)
 // Takes the distance between three points and returns the angle <213
 double get_angle(double l12, double l13, double l23)
 {
-    return acos((pow(l12,2)+pow(l13,2)-pow(l23,2))/(2*l12*l13));
+    double result = (pow(l12,2)+pow(l13,2)-pow(l23,2))/(2*l12*l13);
+    if (DOUBLECOMPARE(result,1)==EQ||DOUBLECOMPARE(result,1)==GT)
+        result = 1;
+    else if (DOUBLECOMPARE(result,-1)==EQ||DOUBLECOMPARE(result,-1)==LT)
+        result = -1;
+    return acos(result);
 }
 
 // Takes the x and y coordinates of two Cartesian points and returns the slope
@@ -390,6 +395,7 @@ return;
 // RADIUS1. The points that are checked are separated by A_PTS and B_PTS.
 void LIC_8()
 {
+    CMV[8] = FALSE;
     // If NUMPOINTS is less than 5, then false
     if (NUMPOINTS<5) {
         CMV[8] = FALSE;
@@ -585,29 +591,29 @@ double hp = (l12+l13+l23)/2; // calculating half-perimeter
 double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
 //find if the area formed by the points is greater than PARAMETER.AREA1
 if(DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
-  {
+{
     for(j=0;(j+PARAMETERS.E_PTS+PARAMETERS.F_PTS+1+1< NUMPOINTS);j++)
-      {
+    {
         double x1 = X[j];
-	double x2 = X[j+PARAMETERS.E_PTS+1];
-	double x3 = X[j+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-	double y1 = Y[j];
-	double y2 = Y[j+PARAMETERS.E_PTS+1];
-	double y3 = Y[j+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-	double l12 = get_distance(x1,x2,y1,y2);
-	double l13 = get_distance(x1,x3,y1,y3);
-	double l23 = get_distance(x2,x3,y2,y3);
-	double hp = (l12+l13+l23)/2; // calculating half-perimeter
-	double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
-//find if the area formed by the points is less than PARAMETER.AREA2
-	if(DOUBLECOMPARE(area,PARAMETERS.AREA2)==LT)
-	  {       
-		CMV[14]=TRUE;
-		return;
-	  }
-	}
-  }
-}//closes i forloop
+        double x2 = X[j+PARAMETERS.E_PTS+1];
+        double x3 = X[j+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+        double y1 = Y[j];
+        double y2 = Y[j+PARAMETERS.E_PTS+1];
+        double y3 = Y[j+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+        double l12 = get_distance(x1,x2,y1,y2);
+        double l13 = get_distance(x1,x3,y1,y3);
+        double l23 = get_distance(x2,x3,y2,y3);
+        double hp = (l12+l13+l23)/2; // calculating half-perimeter
+        double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
+        //find if the area formed by the points is less than PARAMETER.AREA2
+        if(DOUBLECOMPARE(area,PARAMETERS.AREA2)==LT)
+        {       
+            CMV[14]=TRUE;
+            return;
+        }
+    }
+}
+}
 }//End of LIC_14
 
 void DECIDE(void) {
