@@ -168,6 +168,14 @@ boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
         return FALSE;
 }
 
+// An experimental area calculation that doesn't use Heron's formula. It might
+// solve the LIC_3,10, and 14 discrepancies
+double get_area(double x1, double y1, double x2, double y2, double x3,
+        double y3)
+{
+    return fabs((x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2))/2);
+}
+
 //******************************LIC_0()***********************************
 void LIC_0() 
 {
@@ -267,14 +275,15 @@ void LIC_3()
         double y1 = Y[i];
         double y2 = Y[i+1];
         double y3 = Y[i+2];
-        double l12 = get_distance(x1,x2,y1,y2);
-        double l13 = get_distance(x1,x3,y1,y3);
-        double l23 = get_distance(x2,x3,y2,y3);
-        double hp = (l12+l13+l23)/2; // calculating half-perimeter
-        double result = hp*(hp-l12)*(hp-l13)*(hp-l23);
-        if (DOUBLECOMPARE(result,0)==LT)
-            result = 0;
-        double area = sqrt(result);
+        double area = get_area(x1,y1,x2,y2,x3,y3);
+        //double l12 = get_distance(x1,x2,y1,y2);
+        //double l13 = get_distance(x1,x3,y1,y3);
+        //double l23 = get_distance(x2,x3,y2,y3);
+        //double hp = (l12+l13+l23)/2; // calculating half-perimeter
+        //double result = hp*(hp-l12)*(hp-l13)*(hp-l23);
+        //if (DOUBLECOMPARE(result,0)==LT)
+        //    result = 0;
+        //double area = sqrt(result);
         if (DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
         {
             CMV[3] = TRUE;
@@ -495,14 +504,15 @@ void LIC_10()
         double y1 = Y[i];
         double y2 = Y[i+PARAMETERS.E_PTS+1];
         double y3 = Y[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-        double l12 = get_distance(x1,x2,y1,y2);
-        double l13 = get_distance(x1,x3,y1,y3);
-        double l23 = get_distance(x2,x3,y2,y3);
-        double hp = (l12+l13+l23)/2; // calculating half-perimeter
-        double result = hp*(hp-l12)*(hp-l13)*(hp-l23);
-        if (DOUBLECOMPARE(result,0)==LT)
-            result = 0;
-        double area = sqrt(result);
+        //double l12 = get_distance(x1,x2,y1,y2);
+        //double l13 = get_distance(x1,x3,y1,y3);
+        //double l23 = get_distance(x2,x3,y2,y3);
+        //double hp = (l12+l13+l23)/2; // calculating half-perimeter
+        //double result = hp*(hp-l12)*(hp-l13)*(hp-l23);
+        //if (DOUBLECOMPARE(result,0)==LT)
+        //    result = 0;
+        //double area = sqrt(result);
+        double area = get_area(x1,y1,x2,y2,x3,y3);
         if(DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
         {
             CMV[10]=TRUE;
@@ -623,17 +633,18 @@ void LIC_14()
             double y1 = Y[j];
             double y2 = Y[j+PARAMETERS.E_PTS+1];
             double y3 = Y[j+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-            double l12 = get_distance(x1,x2,y1,y2);
-            double l13 = get_distance(x1,x3,y1,y3);
-            double l23 = get_distance(x2,x3,y2,y3);
-            double hp = (l12+l13+l23)/2; // calculating half-perimeter
-            double result = hp*(hp-l12)*(hp-l13)*(hp-l23);
-            // result shouldn't be a negative number, it should be multiplying
-            // all positive numbers. If it is negative, some weird overflow
-            // occured
-            if (DOUBLECOMPARE(result,0)==LT)
-                result = 0;
-            double area = sqrt(result);
+            //double l12 = get_distance(x1,x2,y1,y2);
+            //double l13 = get_distance(x1,x3,y1,y3);
+            //double l23 = get_distance(x2,x3,y2,y3);
+            //double hp = (l12+l13+l23)/2; // calculating half-perimeter
+            //double result = hp*(hp-l12)*(hp-l13)*(hp-l23);
+            //// result shouldn't be a negative number, it should be multiplying
+            //// all positive numbers. If it is negative, some weird overflow
+            //// occured
+            //if (DOUBLECOMPARE(result,0)==LT)
+            //    result = 0;
+            //double area = sqrt(result);
+            double area = get_area(x1,y1,x2,y2,x3,y3);
             //find if the area formed by the points is less than PARAMETER.AREA2
             if(DOUBLECOMPARE(area,PARAMETERS.AREA2)==LT)
             {       
