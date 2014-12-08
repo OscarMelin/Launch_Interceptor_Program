@@ -104,6 +104,25 @@ boolean cannot_be_contained_in_circle(double x1, double y1, double x2,
     }
     // If the angle is <= 90, then check one more angle
     double theta2 = get_angle(l12,l23,l13);
+
+    // If theta1 and theta2 are zero, then we just have a line, not a triangle
+    if (DOUBLECOMPARE(theta1,0)==EQ&&DOUBLECOMPARE(theta2,0)==EQ) {
+        // Find a side that is non-zero
+        if (DOUBLECOMPARE(l12,0)!=EQ) {
+            if (DOUBLECOMPARE(l12/2,radius)==GT)
+                return TRUE;
+            else
+                return FALSE;
+        }
+        // We should only have to test one more side
+        else {
+            if (DOUBLECOMPARE(l13/2,radius)==GT)
+                return TRUE;
+            else
+                return FALSE;
+        }
+    }
+
     if (DOUBLECOMPARE(theta2,PI/2)==GT||DOUBLECOMPARE(theta2,PI/2)==EQ) {
         // If this is greater than RADIUS1 then set the CMV and return
         if (DOUBLECOMPARE(l13/2,radius)==GT) {
