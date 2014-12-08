@@ -461,29 +461,32 @@ double angle = get_angle(l12,l23,l13);//vertex of angle is Pt. 2 (angle opp to l
 //*****************LIC10()*********************
 void LIC_10()
 {
-CMV[10]=FALSE;
-if(NUMPOINTS < 5)
-return;
-int i;
-for(i=0;(i+PARAMETERS.E_PTS+PARAMETERS.F_PTS+1+1< NUMPOINTS);i++)
-{
-double x1 = X[i];
-double x2 = X[i+PARAMETERS.E_PTS+1];
-double x3 = X[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-double y1 = Y[i];
-double y2 = Y[i+PARAMETERS.E_PTS+1];
-double y3 = Y[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-double l12 = get_distance(x1,x2,y1,y2);
-double l13 = get_distance(x1,x3,y1,y3);
-double l23 = get_distance(x2,x3,y2,y3);
-double hp = (l12+l13+l23)/2; // calculating half-perimeter
-double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
-if(DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
-{
-CMV[10]=TRUE;
-return;
-}
-}
+    CMV[10]=FALSE;
+    if(NUMPOINTS < 5)
+        return;
+    int i;
+    for(i=0;(i+PARAMETERS.E_PTS+PARAMETERS.F_PTS+1+1< NUMPOINTS);i++)
+    {
+        double x1 = X[i];
+        double x2 = X[i+PARAMETERS.E_PTS+1];
+        double x3 = X[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+        double y1 = Y[i];
+        double y2 = Y[i+PARAMETERS.E_PTS+1];
+        double y3 = Y[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+        double l12 = get_distance(x1,x2,y1,y2);
+        double l13 = get_distance(x1,x3,y1,y3);
+        double l23 = get_distance(x2,x3,y2,y3);
+        double hp = (l12+l13+l23)/2; // calculating half-perimeter
+        double result = hp*(hp-l12)*(hp-l13)*(hp-l23);
+        if (DOUBLECOMPARE(result,0)==LT)
+            result = 0;
+        double area = sqrt(result);
+        if(DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
+        {
+            CMV[10]=TRUE;
+            return;
+        }
+    }
 }//End of LIC_10
 //*************LIC_11()****************************
 void LIC_11()
@@ -572,48 +575,51 @@ void LIC_13()
 //********************LIC_14()****************************************
 void LIC_14()
 {
-CMV[14]=FALSE;
-if(NUMPOINTS < 5)
-return;
-int i,j;
-for(i=0;(i+PARAMETERS.E_PTS+PARAMETERS.F_PTS+1+1< NUMPOINTS);i++)
-{
-double x1 = X[i];
-double x2 = X[i+PARAMETERS.E_PTS+1];
-double x3 = X[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-double y1 = Y[i];
-double y2 = Y[i+PARAMETERS.E_PTS+1];
-double y3 = Y[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-double l12 = get_distance(x1,x2,y1,y2);
-double l13 = get_distance(x1,x3,y1,y3);
-double l23 = get_distance(x2,x3,y2,y3);
-double hp = (l12+l13+l23)/2; // calculating half-perimeter
-double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
-//find if the area formed by the points is greater than PARAMETER.AREA1
-if(DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
-{
-    for(j=0;(j+PARAMETERS.E_PTS+PARAMETERS.F_PTS+1+1< NUMPOINTS);j++)
-    {
-        double x1 = X[j];
-        double x2 = X[j+PARAMETERS.E_PTS+1];
-        double x3 = X[j+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-        double y1 = Y[j];
-        double y2 = Y[j+PARAMETERS.E_PTS+1];
-        double y3 = Y[j+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
-        double l12 = get_distance(x1,x2,y1,y2);
-        double l13 = get_distance(x1,x3,y1,y3);
-        double l23 = get_distance(x2,x3,y2,y3);
-        double hp = (l12+l13+l23)/2; // calculating half-perimeter
-        double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
-        //find if the area formed by the points is less than PARAMETER.AREA2
-        if(DOUBLECOMPARE(area,PARAMETERS.AREA2)==LT)
-        {       
-            CMV[14]=TRUE;
-            return;
+    CMV[14]=FALSE;
+    int j;
+    //for(i=0;(i+PARAMETERS.E_PTS+PARAMETERS.F_PTS+1+1< NUMPOINTS);i++)
+    //{
+    //double x1 = X[i];
+    //double x2 = X[i+PARAMETERS.E_PTS+1];
+    //double x3 = X[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+    //double y1 = Y[i];
+    //double y2 = Y[i+PARAMETERS.E_PTS+1];
+    //double y3 = Y[i+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+    //double l12 = get_distance(x1,x2,y1,y2);
+    //double l13 = get_distance(x1,x3,y1,y3);
+    //double l23 = get_distance(x2,x3,y2,y3);
+    //double hp = (l12+l13+l23)/2; // calculating half-perimeter
+    //double area = sqrt(hp*(hp-l12)*(hp-l13)*(hp-l23));
+    //find if the area formed by the points is greater than PARAMETER.AREA1
+    //if(DOUBLECOMPARE(area,PARAMETERS.AREA1)==GT)
+    if (CMV[10]==TRUE) {
+        for(j=0;(j+PARAMETERS.E_PTS+PARAMETERS.F_PTS+1+1< NUMPOINTS);j++)
+        {
+            double x1 = X[j];
+            double x2 = X[j+PARAMETERS.E_PTS+1];
+            double x3 = X[j+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+            double y1 = Y[j];
+            double y2 = Y[j+PARAMETERS.E_PTS+1];
+            double y3 = Y[j+PARAMETERS.E_PTS+1+PARAMETERS.F_PTS+1];
+            double l12 = get_distance(x1,x2,y1,y2);
+            double l13 = get_distance(x1,x3,y1,y3);
+            double l23 = get_distance(x2,x3,y2,y3);
+            double hp = (l12+l13+l23)/2; // calculating half-perimeter
+            double result = hp*(hp-l12)*(hp-l13)*(hp-l23);
+            // result shouldn't be a negative number, it should be multiplying
+            // all positive numbers. If it is negative, some weird overflow
+            // occured
+            if (DOUBLECOMPARE(result,0)==LT)
+                result = 0;
+            double area = sqrt(result);
+            //find if the area formed by the points is less than PARAMETER.AREA2
+            if(DOUBLECOMPARE(area,PARAMETERS.AREA2)==LT)
+            {       
+                CMV[14]=TRUE;
+                return;
+            }
         }
     }
-}
-}
 }//End of LIC_14
 
 void DECIDE(void) {
