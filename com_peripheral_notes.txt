@@ -1,8 +1,0 @@
-Notes for using GPIO, SPI, I2C on BeagleBone Black
-
-UART/Serial:
-	http://tldp.org/HOWTO/Serial-Programming-HOWTO/x115.html
-	http://en.wikibooks.org/wiki/Serial_Programming/Serial_Linux
-	
-SPI:	
-	https://www.kernel.org/doc/Documentation/spi/spidev
